@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4.3.3 # https://github.com/actions/upload-artifact/releases
         with:
           name: plugin-jar
-          path: build/libs/*.jargithu
+          path: build/libs/*.jar
