@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'java'
     id("com.gradleup.shadow") version "8.3.5"
@@ -41,14 +43,15 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-tasks.named('shadowJar') {
+tasks.named('shadowJar', ShadowJar) {
     dependencies {
         include(dependency("com.github.kangarko:Foundation:6.9.12"))
     }
+    archiveClassifier.set("")
 }
 
 processResources {
-    def props = [version: version, projectName: project.name, author: author]
+    def props = [version: version, projectName: project.name, author: author, basename: project.name + "-" + version]
     inputs.properties props
     filteringCharset 'UTF-8'
 
