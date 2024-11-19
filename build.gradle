@@ -1,8 +1,14 @@
-plugins {
-    id 'java'
-    id 'io.github.goooler.shadow' version "8.1.7"
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:8.3.5'
+    }
 }
+
+apply plugin: 'com.gradleup.shadow'
+apply plugin: 'java'
 
 group = "org.macemc"
 version = '0.0.1'
@@ -18,6 +24,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+
+
     shadow("com.github.kangarko:Foundation:6.9.9")
 
     compileOnly("org.projectlombok:lombok:1.18.34")
@@ -51,8 +59,4 @@ processResources {
     filesMatching('**/*.yml') {
         expand props
     }
-}
-
-shadowJar {
-    configurations = [project.configurations.shadowImplementation]
 }
