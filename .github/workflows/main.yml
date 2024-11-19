@@ -9,9 +9,6 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -34,7 +31,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: shadowJar
+        run: ./gradle clean shadowJar
 
       - name: Upload plugin JAR
         uses: actions/upload-artifact@v3
