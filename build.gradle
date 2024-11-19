@@ -1,8 +1,10 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.github.goooler.shadow' version "8.1.7"
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
 }
 
+group = "org.macemc"
 version = '0.0.1'
 def author = 'tooobiiii'
 
@@ -16,18 +18,11 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
-    implementation("com.github.kangarko:Foundation:6.9.9")
+    shadow("com.github.kangarko:Foundation:6.9.9")
 
     compileOnly("org.projectlombok:lombok:1.18.34")
 
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-}
-
-shadowJar {
-    dependencies {
-        include(dependency("com.github.kangarko:Foundation:6.9.9"))
-    }
-    archiveClassifier.set("")
 }
 
 def targetJavaVersion = 21
@@ -56,4 +51,8 @@ processResources {
     filesMatching('**/*.yml') {
         expand props
     }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowImplementation]
 }
