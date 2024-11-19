@@ -1,24 +1,33 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'me.tooobiiii'
-version = '0.01'
+version = '0.0.1'
+def author = 'tooobiiii'
 
 repositories {
     mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+    maven { url = "https://jitpack.io" }
+    maven { url = "https://bitbucket.org/kangarko/libraries/raw/master" }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    implementation("com.github.kangarko:Foundation:6.9.9")
+
+    compileOnly("org.projectlombok:lombok:1.18.34")
+
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
+}
+
+shadowJar {
+    dependencies {
+        include(dependency("com.github.kangarko:Foundation:6.9.9"))
+    }
+    archiveClassifier.set("")
 }
 
 def targetJavaVersion = 21
@@ -40,10 +49,11 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [version: version, projectName: project.name, author: author]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
+
+    filesMatching('**/*.yml') {
         expand props
     }
 }

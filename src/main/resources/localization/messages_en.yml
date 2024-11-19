@@ -1,0 +1,31 @@
+# !-----------------------------------------------------------------------------------------------!
+#                              Welcome to the localization file.
+# !-----------------------------------------------------------------------------------------------!
+#
+#   The localization/ folder stores various localization files. Use the suggested naming
+#   convention message_LANGUAGE.yml and then the "SimpleLocalization" or the "Lang" class to
+#   use this file.
+#
+#   1) COLOR CODES are supported with the '&' character.
+#      - For usage, see http://minecraftwiki.net/wiki/Formatting_codes
+#      - When you use them, place quotes around the message like this: "Hello &cworld."
+#       - To use HEX colors, use #123456 syntax: "Hello #123456world."
+#
+# !-----------------------------------------------------------------------------------------------!
+
+# -------------------------------------------------------------------------------------------------
+# Messages related to commands
+# -------------------------------------------------------------------------------------------------
+Commands:
+  Test_Reply: "This is a test"
+
+# -------------------------------------------------------------------------------------------------
+# Different prefixes you can use by calling {prefix_<type>} such as {prefix_info}
+# -------------------------------------------------------------------------------------------------
+Prefix:
+  Info: "&8&l[&9&li&8&l]&7"
+  Success: "&8&l[&2&l!&8&l]&7"
+  Warn: "&8&l[&6&l!&8&l]&6"
+  Error: "&8&l[&4&lX&8&l]&c"
+  Question: "&8&l[&a&l?&l&8]&7"
+  Announce: "&8&l[&5&l!&l&8]&d"

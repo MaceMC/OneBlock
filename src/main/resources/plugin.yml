@@ -1,4 +1,9 @@
-name: TobiFeatures
-version: '0.01'
-main: me.tooobiiii.tobiFeatures.TobiFeatures
+name: ${projectName}
+version: ${version}
+author: ${author}
+main: org.macemc.OneBlock.OneBlockPlugin
 api-version: '1.21'
+
+softdepend: [PlaceholderAPI]
+
+commands:
