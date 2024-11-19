@@ -20,6 +20,9 @@ jobs:
           distribution: 'temurin'
           java-version: 21
 
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v4.0.2 # https://github.com/actions/cache/releases
         with:
@@ -29,7 +32,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew clean shadowJar --refresh-dependencies --info
+        run: ./gradlew clean shadowJar
 
       - name: Upload plugin JAR
         uses: actions/upload-artifact@v4.3.3 # https://github.com/actions/upload-artifact/releases
