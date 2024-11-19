@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id 'java'
-    id("com.gradleup.shadow") version "8.3.5"
+    id 'com.gradleup.shadow' version "8.3.5"
 }
 
 group = "org.macemc"
@@ -15,16 +15,18 @@ repositories {
     maven { url = "https://repo.papermc.io/repository/maven-public/" }
     maven { url = "https://jitpack.io" }
     maven { url = "https://bitbucket.org/kangarko/libraries/raw/master" }
+    maven { url = "https://repo.onarandombox.com/content/groups/public/" }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.2-SNAPSHOT'
 
-    implementation("com.github.kangarko:Foundation:6.9.12")
+    implementation 'com.github.kangarko:Foundation:6.9.12'
 
-    compileOnly("org.projectlombok:lombok:1.18.34")
+    compileOnly 'org.projectlombok:lombok:1.18.34'
 
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
 
 def targetJavaVersion = 21
@@ -45,7 +47,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('shadowJar', ShadowJar) {
     dependencies {
-        include(dependency("com.github.kangarko:Foundation:6.9.12"))
+        include(dependency 'com.github.kangarko:Foundation:6.9.12')
     }
     archiveClassifier.set("")
 }
