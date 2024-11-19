@@ -51,10 +51,9 @@ tasks.named('shadowJar', ShadowJar) {
 }
 
 processResources {
-    def props = [version: version, projectName: project.name, author: author, basename: project.name + "-" + version]
+    def props = [version: version, projectName: project.name, author: author]
     inputs.properties props
     filteringCharset 'UTF-8'
-
     filesMatching('**/*.yml') {
         expand props
     }
