@@ -1,29 +1,26 @@
 package org.macemc.OneBlock.world;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import lombok.Getter;
 import org.bukkit.*;
 import org.macemc.OneBlock.OneBlockPlugin;
-import org.macemc.OneBlock.support.MVSupport;
 
 public class WorldService
 {
 	@Getter
 	private static final NamespacedKey worldKey = new NamespacedKey(OneBlockPlugin.getInstance(), "oneblock");
 	@Getter
-	private final MultiverseWorld world;
+	private final World world;
 
 	private WorldService()
 	{
-		world = MVSupport.getPlugin().getMVWorldManager().getMVWorld(worldKey.getKey()) == null ? createWorld() : MVSupport.getPlugin().getMVWorldManager().getMVWorld(worldKey.getKey());
+		world = (Bukkit.getWorld(worldKey) == null) ? createWorld() : Bukkit.getWorld(worldKey);
 	}
 
-	private MultiverseWorld createWorld()
+	private World createWorld()
 	{
-		MVWorldManager worldManager = MVSupport.getPlugin().getMVWorldManager();
-		worldManager.addWorld(worldKey.getKey(), World.Environment.NORMAL, null, WorldType.NORMAL,false,null);
-		return worldManager.getMVWorld(worldKey.getKey());
+		WorldCreator creator = new WorldCreator(worldKey);
+		creator.generator(new VoidWorldGenerator());
+		return creator.createWorld();
 	}
 
 	private static final class SingletonHolder

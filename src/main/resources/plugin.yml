@@ -3,7 +3,6 @@ version: ${version}
 author: ${author}
 main: org.macemc.OneBlock.OneBlockPlugin
 api-version: '1.21'
-
-softdepend: ['PlaceholderAPI', 'Multiverse-Core']
+softdepend: ['PlaceholderAPI']
 
 commands:

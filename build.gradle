@@ -15,16 +15,21 @@ repositories {
     maven { url = "https://repo.papermc.io/repository/maven-public/" }
     maven { url = "https://jitpack.io" }
     maven { url = "https://bitbucket.org/kangarko/libraries/raw/master" }
-    maven { url = "https://repo.onarandombox.com/content/groups/public/" }
 }
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
-    compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.2-SNAPSHOT'
 
-    implementation 'com.github.kangarko:Foundation:6.9.12'
+    /* Foundation and transitive libs */
+    implementation('com.github.kangarko:Foundation:6.9.12') {
+        transitive = false
+    }
 
-    compileOnly 'org.projectlombok:lombok:1.18.34'
+    compileOnly 'org.mineacademy.plugin:WorldGuard:7.0.11'
+    compileOnly 'org.mineacademy.plugin:PlaceholderAPI:2.11.6'
+    compileOnly 'org.mineacademy.plugin:MultiverseCore:4.3.12'
+
+    compileOnly 'org.projectlombok:lombok:1.18.36'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
