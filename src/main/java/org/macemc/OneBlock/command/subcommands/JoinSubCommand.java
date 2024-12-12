@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.data.PlayerData;
 
+@SuppressWarnings("unused")
 public final class JoinSubCommand extends OneBlockSubCommand
 {
 	private JoinSubCommand()
