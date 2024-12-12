@@ -1,15 +1,16 @@
 package org.macemc.OneBlock;
 
 import lombok.Getter;
+import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.macemc.OneBlock.data.PlayerDataManager;
 import org.macemc.OneBlock.listener.OneBlockListenerGroup;
-import org.macemc.OneBlock.world.WorldService;
+import org.macemc.OneBlock.world.VoidWorldGenerator;
 import org.mineacademy.fo.plugin.SimplePlugin;
 
 public final class OneBlockPlugin extends SimplePlugin
 {
-	@Getter
-	private static WorldService worldService;
 	@Getter
 	private static PlayerDataManager playerDataManager;
 
@@ -17,7 +18,12 @@ public final class OneBlockPlugin extends SimplePlugin
 	protected void onPluginStart()
 	{
 		this.registerAllEvents(OneBlockListenerGroup.class);
-		worldService = WorldService.getInstance();
 		playerDataManager = PlayerDataManager.getInstance();
+	}
+
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id)
+	{
+		return new VoidWorldGenerator();
 	}
 }
