@@ -5,7 +5,7 @@ import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.macemc.OneBlock.data.PlayerDataManager;
+import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.listener.OneBlockListenerGroup;
 import org.macemc.OneBlock.world.VoidWorldBiome;
 import org.macemc.OneBlock.world.VoidWorldGenerator;
@@ -13,14 +13,17 @@ import org.mineacademy.fo.plugin.SimplePlugin;
 
 public final class OneBlockPlugin extends SimplePlugin
 {
-	@Getter
-	private static PlayerDataManager playerDataManager;
 
 	@Override
 	protected void onPluginStart()
 	{
 		this.registerAllEvents(OneBlockListenerGroup.class);
-		playerDataManager = PlayerDataManager.getInstance();
+	}
+
+	@Override
+	protected void onReloadablesStart()
+	{
+		PlayerData.loadData();
 	}
 
 	@Override

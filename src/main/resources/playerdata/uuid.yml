@@ -7,7 +7,7 @@ Island:
 
 # OneBLock related data
 OneBlock:
-  Location: {"oneblock"} [{0}, {64}, {0}]
+  Location: {world=world, x=0.5, y=65.0, z=0.5, pitch=90.0, yaw=-0}
   Level: 0
   Breaks: 0
 
