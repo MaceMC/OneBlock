@@ -1,6 +1,5 @@
 package org.macemc.OneBlock;
 
-import lombok.Getter;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
