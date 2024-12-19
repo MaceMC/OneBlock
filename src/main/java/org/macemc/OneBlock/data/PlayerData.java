@@ -1,8 +1,10 @@
 package org.macemc.OneBlock.data;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.mineacademy.fo.FileUtil;
 import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Getter
 public class PlayerData extends YamlConfig
 {
@@ -27,8 +30,10 @@ public class PlayerData extends YamlConfig
 		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
 	}
 
+	@SuppressWarnings("unused")
 	private PlayerData(final String uuid)
 	{
+		if (uuid.equals("uuid.yml")) return;
 		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
 	}
 
@@ -62,7 +67,6 @@ public class PlayerData extends YamlConfig
 	@Override
 	protected void onSave()
 	{
-		// System.out.println("Saving playerdata... " + "Saving: " + canSaveFile());
 		setPathPrefix("Island");
 
 		this.set("Name", islandName);
@@ -73,6 +77,14 @@ public class PlayerData extends YamlConfig
 		this.set("Location", blockLocation.serialize());
 		this.set("Level", level);
 		this.set("Breaks", breaks);
+
+		setPathPrefix("");
+	}
+
+	@Override
+	protected boolean saveComments()
+	{
+		return false;
 	}
 
 	public static PlayerData FindOrCreateData(final Player p)

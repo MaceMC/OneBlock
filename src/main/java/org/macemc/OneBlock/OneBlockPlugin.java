@@ -20,7 +20,7 @@ public final class OneBlockPlugin extends SimplePlugin
 	}
 
 	@Override
-	protected void onReloadablesStart()
+	protected void onPluginReload()
 	{
 		PlayerData.loadData();
 	}

@@ -25,10 +25,6 @@ dependencies {
         transitive = false
     }
 
-    compileOnly 'org.mineacademy.plugin:WorldGuard:7.0.11'
-    compileOnly 'org.mineacademy.plugin:PlaceholderAPI:2.11.6'
-    compileOnly 'org.mineacademy.plugin:MultiverseCore:4.3.12'
-
     compileOnly 'org.projectlombok:lombok:1.18.36'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
