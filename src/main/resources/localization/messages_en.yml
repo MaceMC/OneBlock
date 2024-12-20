@@ -9,7 +9,7 @@
 #   1) COLOR CODES are supported with the '&' character.
 #      - For usage, see http://minecraftwiki.net/wiki/Formatting_codes
 #      - When you use them, place quotes around the message like this: "Hello &cworld."
-#       - To use HEX colors, use #123456 syntax: "Hello #123456world."
+#      - To use HEX colors, use #123456 syntax: "Hello #123456world."
 #
 # !-----------------------------------------------------------------------------------------------!
 
@@ -17,15 +17,4 @@
 # Messages related to commands
 # -------------------------------------------------------------------------------------------------
 Commands:
-  Test_Reply: "This is a test"
-
-# -------------------------------------------------------------------------------------------------
-# Different prefixes you can use by calling {prefix_<type>} such as {prefix_info}
-# -------------------------------------------------------------------------------------------------
-Prefix:
-  Info: "&8&l[&9&li&8&l]&7"
-  Success: "&8&l[&2&l!&8&l]&7"
-  Warn: "&8&l[&6&l!&8&l]&6"
-  Error: "&8&l[&4&lX&8&l]&c"
-  Question: "&8&l[&a&l?&l&8]&7"
-  Announce: "&8&l[&5&l!&l&8]&d"
+  Join_Reply: "You were sent to &x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9&E&lck&7&l&f"

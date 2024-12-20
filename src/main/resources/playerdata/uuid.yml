@@ -2,9 +2,15 @@
 
 Island:
   Name: "%player%'s Island"
-  Invited: []
+  InvitedPlayers: []
 OneBlock:
-  Location: {world=world, x=0.5, y=65.0, z=0.5, pitch=90.0, yaw=-0}
+  Location:
+    world: world
+    x: 0.5
+    y: 65.0
+    z: 0.5
+    pitch: 0.0
+    yaw: 0.0
   Level: 0
   Breaks: 0
 

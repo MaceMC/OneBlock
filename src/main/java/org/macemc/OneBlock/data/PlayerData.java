@@ -1,28 +1,22 @@
 package org.macemc.OneBlock.data;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.mineacademy.fo.FileUtil;
+import org.macemc.OneBlock.data.sections.IslandData;
+import org.macemc.OneBlock.data.sections.OneBlockData;
 import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Slf4j
 @Getter
 public class PlayerData extends YamlConfig
 {
 	private final static ConfigItems<PlayerData> loadedData = ConfigItems.fromFolder("playerdata", PlayerData.class);
 
-	private String islandName;
-	private List<String> invited;
-
-	private Location blockLocation;
-	private int level, breaks;
+	private IslandData islandData;
+	private OneBlockData oneBlockData;
 
 	private PlayerData(final Player p)
 	{
@@ -30,7 +24,6 @@ public class PlayerData extends YamlConfig
 		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
 	}
 
-	@SuppressWarnings("unused")
 	private PlayerData(final String uuid)
 	{
 		if (uuid.equals("uuid.yml")) return;
@@ -40,45 +33,27 @@ public class PlayerData extends YamlConfig
 	@Override
 	protected void onLoad()
 	{
+		setPathPrefix("");
+
 		/* Loading island data */
-		setPathPrefix("Island");
-
-		if (isSetDefault("Name"))
-			islandName = getString("Name");
-
-		if (isSetDefault("Invited"))
-			invited = getStringList("Invited");
+		this.islandData = IslandData.deserialize(getMap("Island"));
+		this.islandData.setPlayerData(this);
 
 		/* Loading OneBlock data */
-		setPathPrefix("OneBlock");
-
-		if (isSetDefault("Location"))
-			blockLocation = Location.deserialize(getMap("Location").asMap());
-
-		if (isSetDefault("Level"))
-			level = getInteger("Level");
-
-		if (isSetDefault("Breaks"))
-			breaks = getInteger("Breaks");
-
-		setPathPrefix("");
+		this.oneBlockData = OneBlockData.deserialize(getMap("OneBlock"));
+		this.oneBlockData.setPlayerData(this);
 	}
 
 	@Override
 	protected void onSave()
 	{
-		setPathPrefix("Island");
-
-		this.set("Name", islandName);
-		this.set("Invited", invited);
-
-		setPathPrefix("OneBlock");
-
-		this.set("Location", blockLocation.serialize());
-		this.set("Level", level);
-		this.set("Breaks", breaks);
-
 		setPathPrefix("");
+
+		/* Saving island data */
+		this.set("Island", islandData.serialize());
+
+		/* Saving OneBlock data */
+		this.set("OneBlock", oneBlockData.serialize());
 	}
 
 	@Override
@@ -127,38 +102,4 @@ public class PlayerData extends YamlConfig
 		loadedData.loadItems();
 	}
 
-	public void setIslandName(String islandName)
-	{
-		this.islandName = islandName;
-
-		this.save();
-	}
-
-	public void setInvited(List<String> invited)
-	{
-		this.invited = invited;
-
-		this.save();
-	}
-
-	public void setBlockLocation(Location blockLocation)
-	{
-		this.blockLocation = blockLocation;
-
-		this.save();
-	}
-
-	public void setLevel(int level)
-	{
-		this.level = level;
-
-		this.save();
-	}
-
-	public void setBreaks(int breaks)
-	{
-		this.breaks = breaks;
-
-		this.save();
-	}
 }

@@ -2,6 +2,8 @@ package org.macemc.OneBlock.command.subcommands;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.macemc.OneBlock.data.PlayerData;
+import org.macemc.OneBlock.lang.Localization;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
 @SuppressWarnings("unused")
@@ -15,10 +17,11 @@ public final class JoinSubCommand extends OneBlockSubCommand
 	@Override
 	protected void onCommand()
 	{
-		if (!isPlayer()) tellError(SimpleLocalization.Commands.NO_CONSOLE);
+		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
 		Player p = getPlayer();
-		Location location = new Location(getPlayer().getWorld(), 0, 64,0);
+		PlayerData playerData = PlayerData.FindOrCreateData(p);
+		Location location = playerData.getOneBlockData().getOneBlockLocation();
 		p.teleport(location);
-		tell("You were sent to OneBlock!");
+		tell(Localization.Commands.JOIN_REPLY);
 	}
 }

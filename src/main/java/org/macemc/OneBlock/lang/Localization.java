@@ -8,15 +8,15 @@ public class Localization extends SimpleLocalization
 {
 	public static final class Commands
 	{
-		public static String TEST_REPLY = "This is a test";
+		public static String JOIN_REPLY = "You were sent to &x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9&E&lck&7&l&f";
 
 		public Commands() { }
 
 		private static void init()
 		{
 			setPathPrefix("Commands");
-			if (YamlStaticConfig.isSetDefault("Test_Reply"))
-				TEST_REPLY = YamlStaticConfig.getString("Test_Reply");
+			if (YamlStaticConfig.isSetDefault("Join_Reply"))
+				JOIN_REPLY = YamlStaticConfig.getString("Join_Reply");
 		}
 	}
 }
