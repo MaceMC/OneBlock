@@ -15,21 +15,8 @@ public class IslandData extends Data
 {
 	public enum Keys
 	{
-		Name("Name"),
-		TrustedPlayers("InvitedPlayers");
-
-		private final String key;
-
-		Keys(String key)
-		{
-			this.key = key;
-		}
-
-		@Override
-		public String toString()
-		{
-			return key;
-		}
+		Name,
+		InvitedPlayers;
 	}
 
 	private PlayerData playerData;
@@ -47,15 +34,15 @@ public class IslandData extends Data
 	public SerializedMap serialize()
 	{
 		SerializedMap map = new SerializedMap();
-		map.put(Keys.Name.toString(), name);
-		map.put(Keys.TrustedPlayers.toString(), invitedPlayers);
+		map.put(Keys.Name.name(), name);
+		map.put(Keys.InvitedPlayers.name(), invitedPlayers);
 		return map;
 	}
 
 	public static IslandData deserialize(SerializedMap map)
 	{
-		String name = map.getString(Keys.Name.toString());
-		ArrayList<UUID> trustedPlayers = (ArrayList<UUID>) map.getList(Keys.TrustedPlayers.toString(), UUID.class);
+		String name = map.getString(Keys.Name.name());
+		ArrayList<UUID> trustedPlayers = (ArrayList<UUID>) map.getList(Keys.InvitedPlayers.name(), UUID.class);
 		return new IslandData(name, trustedPlayers);
 	}
 

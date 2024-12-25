@@ -1,9 +1,8 @@
 package org.macemc.OneBlock;
 
-import org.bukkit.World;
+import com.jeff_media.customblockdata.CustomBlockData;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.macemc.OneBlock.data.PlayerData;
@@ -19,6 +18,7 @@ public final class OneBlockPlugin extends SimplePlugin
 	protected void onPluginStart()
 	{
 		this.registerAllEvents(OneBlockListenerGroup.class);
+		CustomBlockData.registerListener(this);
 	}
 
 	@Override

@@ -9,20 +9,26 @@ public final class SetLevelCommand extends OneBlockSubCommand
 	private SetLevelCommand()
 	{
 		super("setLevel");
+		setMinArguments(1);
 	}
 
 	@Override
 	protected void onCommand()
 	{
 		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
-		final int level = 10;
-		Player p = getPlayer();
-		tell("Finding or creating file...");
-		PlayerData playerData = PlayerData.FindOrCreateData(p);
-		tell("Success");
-		playerData.getOneBlockData().setLevel(level);
-		playerData.save();
-		tell("New Level set to: " + level);
-		tellSuccess("Command executed successfully");
+		try
+		{
+			Player p = getPlayer();
+			PlayerData playerData = PlayerData.FindOrCreateData(p);
+
+			final int level = Integer.parseInt(args[0]);
+			playerData.getOneBlockData().setLevel(level);
+
+			tell("New Level set to: " + level);
+		}
+		catch (NumberFormatException e)
+		{
+			tellError(SimpleLocalization.Commands.INVALID_NUMBER);
+		}
 	}
 }

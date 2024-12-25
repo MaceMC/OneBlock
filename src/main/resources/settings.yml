@@ -1,11 +1,11 @@
 # !-----------------------------------------------------------------------------------------------!
-#                       Welcome to the main configuration of ${projectName}
+#                       Welcome to the main configuration of OneBlock
 # !-----------------------------------------------------------------------------------------------!
 # -------------------------------------------------------------------------------------------------
 # The prefix used in front of most chat or console messages. You can manually use it with
 # {plugin_prefix} variable anywhere.
 # -------------------------------------------------------------------------------------------------
-Prefix: "&7&l[&x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9&E&lck&7&l]&f"
+Prefix: '&7&l[&x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9&E&lck&7&l]&f'
 
 # -------------------------------------------------------------------------------------------------
 # What language should we use for messages? If it exists, the language file will be copied
@@ -13,3 +13,176 @@ Prefix: "&7&l[&x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9
 # -------------------------------------------------------------------------------------------------
 locale: en
 
+OneBlock:
+  LootPool:
+    1:
+      - 'GRASS_BLOCK'
+      - 'DIRT'
+      - 'OAK_LOG'
+      - 'OAK_LEAVES'
+      - 'MELON'
+      - 'PODZOL'
+      - 'CREEPER'
+    2:
+      - 'BIRCH_LOG'
+      - 'OAK_LOG'
+      - 'OAK_LEAVES'
+      - 'SHEEP'
+      - 'COW'
+      - 'PIG'
+      - 'CHICKEN'
+    3:
+      - 'STONE'
+      - 'COBBLESTONE'
+      - 'COAL_ORE'
+      - 'GRAVEL'
+      - 'SKELETON'
+    4:
+      - 'GRANITE'
+      - 'DIORITE'
+      - 'ANDESITE'
+    5:
+      - 'SAND'
+      - 'SANDSTONE'
+      - 'CACTUS'
+    6:
+      - 'IRON_ORE'
+      - 'COARSE_DIRT'
+      - 'COPPER_ORE'
+      - 'DEEPSLATE_COPPER_ORE'
+    7:
+      - 'MOSSY_COBBLESTONE'
+      - 'WHITE_TERRACOTTA'
+      - 'ORANGE_TERRACOTTA'
+      - 'YELLOW_TERRACOTTA'
+      - 'HORSE'
+      - 'MULE'
+      - 'DONKEY'
+    8:
+      - 'SPRUCE_LOG'
+      - 'DARK_OAK_LOG'
+      - 'SPRUCE_LEAVES'
+    9:
+      - 'STONE'
+      - 'COAL_ORE'
+      - 'GOLD_ORE'
+      - 'LAPIS_ORE'
+    10:
+      - 'IRON_ORE'
+      - 'INFESTED_STONE'
+      - 'SNOW_BLOCK'
+      - 'PACKED_ICE'
+    11:
+      - 'CLAY'
+      - 'WHITE_CONCRETE'
+      - 'RED_SAND'
+      - 'RED_SANDSTONE'
+      - 'VILLAGER'
+    12:
+      - 'ACACIA_LOG'
+      - 'ACACIA_LEAVES'
+      - 'MUSHROOM_STEM'
+      - 'BROWN_MUSHROOM_BLOCK'
+      - 'RED_MUSHROOM_BLOCK'
+      - 'PUMPKIN'
+      - 'MUSHROOM_COW'
+    13:
+      - 'PRISMARINE_BRICKS'
+      - 'DARK_PRISMARINE'
+      - 'SEA_LANTERN'
+      - 'GUARDIAN'
+      - 'ELDER_GUARDIAN'
+    14:
+      - 'DIAMOND_ORE'
+      - 'EMERALD_ORE'
+      - 'CHISELED_SANDSTONE'
+    15:
+      - 'MANGROVE_LEAVES'
+      - 'MANGROVE_LOG'
+      - 'MANGROVE_PLANKS'
+      - 'MUDDY_MANGROVE_ROOTS'
+      - 'STRIPPED_MANGROVE_LOG'
+      - 'BEE_NEST'
+      - 'MUD'
+      - 'CLAY'
+    16:
+      - 'CUT_SANDSTONE'
+      - 'CARVED_PUMPKIN'
+      - 'OBSIDIAN'
+    17:
+      - 'NETHERRACK'
+      - 'GLOWSTONE'
+      - 'SOUL_SAND'
+      - 'PILLAGER'
+      - 'ZOMBIFIED_PIGLIN'
+    18:
+      - 'SCULK'
+      - 'SCULK_SENSOR'
+      - 'SCULK_CATALYST'
+      - 'SCULK_SHRIEKER'
+      - 'WITHER_SKELETON'
+      - 'BLAZE'
+      - 'ZOGLIN'
+      - 'STRIDER'
+    19:
+      - 'CHISELED_STONE_BRICKS'
+      - 'NETHER_BRICKS'
+      - 'GREEN_TERRACOTTA'
+      - 'PINK_TERRACOTTA'
+      - 'NETHER_QUARTZ_ORE'
+      - 'BLACK_TERRACOTTA'
+      - 'PIGLIN'
+      - 'HOGLIN'
+    20:
+      - 'NETHER_BRICKS'
+      - 'NETHERRACK'
+      - 'NETHER_QUARTZ_ORE'
+    21:
+      - 'PRISMARINE'
+      - 'CRIMSON_NYLIUM'
+      - 'WARPED_NYLIUM'
+      - 'AMETHYST_BLOCK'
+      - 'DIAMOND_BLOCK'
+    22:
+      - 'NETHERRACK'
+      - 'CRIMSON_STEM'
+    23:
+      - 'WARPED_STEM'
+      - 'OXIDIZED_COPPER'
+      - 'NETHER_GOLD_ORE'
+    24:
+      - 'DEEPSLATE'
+      - 'COBBLED_DEEPSLATE'
+      - 'POLISHED_DEEPSLATE'
+      - 'DEEPSLATE_BRICKS'
+      - 'DEEPSLATE_TILES'
+      - 'CHISELED_DEEPSLATE'
+      - 'DEEPSLATE_BRICKS'
+      - 'OAK_SLAB'
+      - 'GRAY_WOOL'
+      - 'SCULK_SENSOR'
+      - 'REDSTONE_LAMP'
+      - 'SOUL_SAND'
+      - 'FURNACE'
+      - 'LECTERN'
+      - 'REDSTONE_BLOCK'
+      - 'TARGET'
+    25:
+      - 'CRIMSON_HYPHAE'
+      - 'WARPED_HYPHAE'
+      - 'CRACKED_NETHER_BRICKS'
+    26:
+      - 'SHROOMLIGHT'
+      - 'CRYING_OBSIDIAN'
+      - 'BLACKSTONE'
+      - 'DEEPSLATE_BRICKS'
+      - 'CRACKED_DEEPSLATE_BRICKS'
+    27:
+      - 'NETHERITE_BLOCK'
+      - 'ANCIENT_DEBRIS'
+      - 'POLISHED_BLACKSTONE'
+    28:
+      - 'END_STONE'
+      - 'CUT_SANDSTONE'
+      - 'CARVED_PUMPKIN'
+      - 'OBSIDIAN'
