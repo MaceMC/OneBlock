@@ -13,9 +13,7 @@ import org.macemc.OneBlock.listener.BlockListener;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
-import java.util.List;
-import java.util.Map;
-
+@SuppressWarnings("unused")
 public final class TestCommand extends OneBlockSubCommand
 {
 	private TestCommand()
@@ -33,38 +31,6 @@ public final class TestCommand extends OneBlockSubCommand
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		customBlockData.set(BlockListener.isOneBlockKey, PersistentDataType.BOOLEAN, true);
 		customBlockData.setProtected(true);
-
 		tellSuccess("Command executed successfully");
-	}
-
-	public void testMaterial(Map<Integer, List<String>> map)
-	{
-		for (List<String> s : map.values())
-		{
-			for (String str : s )
-			{
-				try
-				{
-					System.out.println("Testing for String " + str);
-					Material mat = Material.getMaterial(str);
-					if (mat != null)
-					{
-						System.out.println("Found!");
-						continue;
-					}
-					EntityType entityType = EntityType.fromName(str);
-					if (entityType != null)
-					{
-						System.out.println("Found!");
-						continue;
-					}
-					System.out.println("Not found! " + str);
-				}
-				catch (Exception e)
-				{
-					Common.log(e.toString());
-				}
-			}
-		}
 	}
 }
