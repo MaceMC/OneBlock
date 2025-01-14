@@ -24,7 +24,7 @@ public class BlockListener extends OneBlockListenerGroup
 	public static final NamespacedKey ownerKey = new NamespacedKey(OneBlockPlugin.getInstance(), "oneBlock.owner");
 
 	@EventHandler
-	public void blockBreakEvent(BlockBreakEvent e)
+	public void onBlockBreak(BlockBreakEvent e)
 	{
 		Block block = e.getBlock();
 		Plugin plugin = OneBlockPlugin.getInstance();
@@ -51,7 +51,7 @@ public class BlockListener extends OneBlockListenerGroup
 	}
 
 	@EventHandler
-	public void onCustomBlockDataChangeEvent(CustomBlockDataEvent e)
+	public void onCustomBlockData(CustomBlockDataEvent e)
 	{
 		if (e.getReason() == CustomBlockDataEvent.Reason.BLOCK_BREAK)
 			e.setCancelled(true);
