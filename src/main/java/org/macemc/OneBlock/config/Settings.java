@@ -1,6 +1,5 @@
 package org.macemc.OneBlock.config;
 
-import org.bukkit.Material;
 import org.mineacademy.fo.settings.SimpleSettings;
 
 import java.util.HashMap;

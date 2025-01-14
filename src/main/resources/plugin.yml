@@ -5,6 +5,7 @@ main: org.macemc.OneBlock.OneBlockPlugin
 api-version: '1.21'
 load: STARTUP
 
+depend: ['WorldGuard']
 softdepend: ['PlaceholderAPI']
 
 commands:

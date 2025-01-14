@@ -1,19 +1,13 @@
 package org.macemc.OneBlock.listener;
 
 import com.jeff_media.customblockdata.CustomBlockData;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import com.jeff_media.customblockdata.events.CustomBlockDataEvent;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockFadeEvent;
-import org.bukkit.event.block.LeavesDecayEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.macemc.OneBlock.OneBlockPlugin;
@@ -46,44 +40,21 @@ public class BlockListener extends OneBlockListenerGroup
 		{
 			plugin.getServer().getScheduler().runTaskLater(plugin, () ->
 			{
-				block.setType(Material.GRASS_BLOCK);
+				block.setType(Material.GRASS_BLOCK, false);
 				block.getWorld().spawnEntity(location, action.getKey());
 			}, 1L);
 		}
 		else
 		{
-			plugin.getServer().getScheduler().runTaskLater(plugin, () -> block.setType(action.getValue()), 1L);
+			plugin.getServer().getScheduler().runTaskLater(plugin, () -> block.setType(action.getValue(), false), 1L);
 		}
 	}
 
 	@EventHandler
-	public void onEntityChangeBlock(EntityChangeBlockEvent e)
+	public void onCustomBlockDataChangeEvent(CustomBlockDataEvent e)
 	{
-		e.setCancelled(isOneBlock(e.getBlock()));
-	}
-
-	@EventHandler
-	public void onLeavesDecay(LeavesDecayEvent e)
-	{
-		e.setCancelled(isOneBlock(e.getBlock()));
-	}
-
-	@EventHandler
-	public void onBlockExplode(BlockExplodeEvent e)
-	{
-		e.setCancelled(isOneBlock(e.getBlock()));
-	}
-
-	@EventHandler
-	public void onBlockFade(BlockFadeEvent e)
-	{
-		e.setCancelled(isOneBlock(e.getBlock()));
-	}
-
-	@EventHandler
-	public void onBlockTest(EntityExplodeEvent e)
-	{
-		// TODO: Creeper prevention
+		if (e.getReason() == CustomBlockDataEvent.Reason.BLOCK_BREAK)
+			e.setCancelled(true);
 	}
 
 	public static boolean isOneBlock(Block block)

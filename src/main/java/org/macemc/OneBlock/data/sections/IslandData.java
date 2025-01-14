@@ -16,7 +16,7 @@ public class IslandData extends Data
 	public enum Keys
 	{
 		Name,
-		InvitedPlayers;
+		InvitedPlayers
 	}
 
 	private PlayerData playerData;

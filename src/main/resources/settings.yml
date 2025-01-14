@@ -20,7 +20,6 @@ OneBlock:
       - 'DIRT'
       - 'OAK_LOG'
       - 'OAK_LEAVES'
-      - 'MELON'
       - 'PODZOL'
       - 'CREEPER'
     2:
@@ -84,7 +83,6 @@ OneBlock:
       - 'MUSHROOM_STEM'
       - 'BROWN_MUSHROOM_BLOCK'
       - 'RED_MUSHROOM_BLOCK'
-      - 'PUMPKIN'
       - 'MUSHROOM_COW'
     13:
       - 'PRISMARINE_BRICKS'
@@ -107,7 +105,6 @@ OneBlock:
       - 'CLAY'
     16:
       - 'CUT_SANDSTONE'
-      - 'CARVED_PUMPKIN'
       - 'OBSIDIAN'
     17:
       - 'NETHERRACK'
@@ -184,5 +181,4 @@ OneBlock:
     28:
       - 'END_STONE'
       - 'CUT_SANDSTONE'
-      - 'CARVED_PUMPKIN'
       - 'OBSIDIAN'

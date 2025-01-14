@@ -7,6 +7,8 @@ import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.config.Settings;
 import org.mineacademy.fo.collection.SerializedMap;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -16,13 +18,14 @@ public class OneBlockData extends Data
 	{
 		Location,
 		Level,
-		Breaks;
+		Breaks
 	}
 
 	private Location oneBlockLocation;
-	private int level, breaks;
+	private int level;
+	private int breaks;
 
-	private List<String> accessible;
+	private List<String> accessible = List.of("GRASS_BLOCK");
 
 	private OneBlockData(Location oneBlockLocation, int level, int breaks)
 	{
@@ -30,7 +33,7 @@ public class OneBlockData extends Data
 		this.level = level;
 		this.breaks = breaks;
 
-		Bukkit.getScheduler().runTaskAsynchronously(OneBlockPlugin.getInstance(), () -> accessible = getAccessibleRewards(level));
+		Bukkit.getScheduler().runTaskAsynchronously(OneBlockPlugin.getInstance(), () -> accessible = getAccessibleRewards());
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class OneBlockData extends Data
 		return new OneBlockData(oneBlockLocation, level, breaks);
 	}
 
-	public static List<String> getAccessibleRewards(int level)
+	public List<String> getAccessibleRewards()
 	{
 		return Settings.OneBlock.map.entrySet().stream()
 				.filter(entry -> entry.getKey() <= level)
@@ -69,7 +72,7 @@ public class OneBlockData extends Data
 	public void setLevel(int level)
 	{
 		this.level = level;
-		this.accessible = getAccessibleRewards(level);
+		Bukkit.getScheduler().runTaskAsynchronously(OneBlockPlugin.getInstance(), () -> accessible = getAccessibleRewards());
 		saveChanges();
 	}
 

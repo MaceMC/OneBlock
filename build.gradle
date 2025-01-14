@@ -25,6 +25,7 @@ dependencies {
         transitive = false
     }
     implementation('org.mineacademy.plugin:WorldGuard:7.0.11')
+    implementation('org.mineacademy.plugin:WorldEdit:7.3.6')
 
     implementation('com.jeff-media:custom-block-data:2.2.3')
 
