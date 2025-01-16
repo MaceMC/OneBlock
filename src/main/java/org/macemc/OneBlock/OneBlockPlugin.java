@@ -18,7 +18,6 @@ public final class OneBlockPlugin extends SimplePlugin
 	protected void onPluginStart()
 	{
 		this.registerAllEvents(OneBlockListenerGroup.class);
-		CustomBlockData.registerListener(this);
 	}
 
 	@Override

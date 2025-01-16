@@ -2,11 +2,13 @@ package org.macemc.OneBlock.data.sections;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.macemc.OneBlock.data.PlayerData;
 import org.mineacademy.fo.collection.SerializedMap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
@@ -19,12 +21,10 @@ public class IslandData extends Data
 		InvitedPlayers
 	}
 
-	private PlayerData playerData;
-
 	private String name;
-	private ArrayList<UUID> invitedPlayers;
+	private HashMap<UUID, String> invitedPlayers;
 
-	private IslandData(@NotNull String name, @NotNull ArrayList<UUID> trustedPlayers)
+	private IslandData(@NotNull String name, @NotNull HashMap<UUID, String> trustedPlayers)
 	{
 		this.name = name;
 		this.invitedPlayers = trustedPlayers;
@@ -42,8 +42,8 @@ public class IslandData extends Data
 	public static IslandData deserialize(SerializedMap map)
 	{
 		String name = map.getString(Keys.Name.name());
-		ArrayList<UUID> trustedPlayers = (ArrayList<UUID>) map.getList(Keys.InvitedPlayers.name(), UUID.class);
-		return new IslandData(name, trustedPlayers);
+		HashMap<UUID, String> invited = map.getMap(Keys.InvitedPlayers.name(), UUID.class, String.class);
+		return new IslandData(name, invited);
 	}
 
 	public void setName(String name)
@@ -52,9 +52,15 @@ public class IslandData extends Data
 		saveChanges();
 	}
 
-	public void setInvitedPlayers(ArrayList<UUID> invitedPlayers)
+	public void setInvitedPlayers(HashMap<UUID, String> invitedPlayers)
 	{
 		this.invitedPlayers = invitedPlayers;
+		saveChanges();
+	}
+
+	public void invitePlayer(Player p)
+	{
+		this.invitedPlayers.put(p.getUniqueId(), p.getName());
 		saveChanges();
 	}
 }

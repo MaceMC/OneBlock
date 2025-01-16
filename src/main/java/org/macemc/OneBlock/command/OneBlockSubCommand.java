@@ -1,4 +1,4 @@
-package org.macemc.OneBlock.command.subcommands;
+package org.macemc.OneBlock.command;
 
 import org.macemc.OneBlock.config.Settings;
 import org.mineacademy.fo.command.SimpleSubCommand;

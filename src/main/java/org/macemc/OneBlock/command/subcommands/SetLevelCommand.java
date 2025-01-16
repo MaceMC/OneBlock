@@ -1,6 +1,7 @@
 package org.macemc.OneBlock.command.subcommands;
 
 import org.bukkit.entity.Player;
+import org.macemc.OneBlock.command.OneBlockSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
 import org.mineacademy.fo.settings.SimpleLocalization;
 

@@ -4,6 +4,7 @@ Island:
   Name: "%player%'s Island"
   InvitedPlayers: []
 OneBlock:
+  RegionID:
   Location:
     world: world
     x: 0.5

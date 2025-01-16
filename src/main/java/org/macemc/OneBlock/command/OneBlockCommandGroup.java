@@ -1,6 +1,5 @@
 package org.macemc.OneBlock.command;
 
-import org.macemc.OneBlock.command.subcommands.OneBlockSubCommand;
 import org.mineacademy.fo.annotation.AutoRegister;
 import org.mineacademy.fo.command.ReloadCommand;
 import org.mineacademy.fo.command.SimpleCommandGroup;

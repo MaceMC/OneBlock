@@ -1,6 +1,7 @@
 package org.macemc.OneBlock.data;
 
 import lombok.Getter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.data.sections.IslandData;
 import org.macemc.OneBlock.data.sections.OneBlockData;
@@ -21,6 +22,12 @@ public class PlayerData extends YamlConfig
 	private PlayerData(final Player p)
 	{
 		UUID uuid = p.getUniqueId();
+		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
+	}
+
+	private PlayerData(final OfflinePlayer op)
+	{
+		UUID uuid = op.getUniqueId();
 		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
 	}
 
@@ -64,12 +71,19 @@ public class PlayerData extends YamlConfig
 
 	public static PlayerData FindOrCreateData(final Player p)
 	{
-		return FindData(p) != null ? FindData(p) : CreateData(p);
+		UUID uuid = p.getUniqueId();
+		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
 	}
 
-	public static PlayerData CreateData(final Player p)
+	public static PlayerData FindOrCreateData(final OfflinePlayer op)
 	{
-		return loadedData.loadOrCreateItem(p.getUniqueId().toString(), () -> new PlayerData(p));
+		UUID uuid = op.getUniqueId();
+		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
+	}
+
+	public static PlayerData CreateData(final UUID uuid)
+	{
+		return loadedData.loadOrCreateItem(uuid.toString(), () -> new PlayerData(uuid.toString()));
 	}
 
 	public void removeData(final PlayerData templateFolderData)
@@ -82,9 +96,9 @@ public class PlayerData extends YamlConfig
 		loadedData.removeItemByName(name);
 	}
 
-	public static PlayerData FindData(final Player p)
+	public static PlayerData FindData(final UUID uuid)
 	{
-		return loadedData.findItem(p.getUniqueId().toString());
+		return loadedData.findItem(uuid.toString());
 	}
 
 	public static boolean IsDataLoaded(final String name)
