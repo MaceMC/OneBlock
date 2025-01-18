@@ -15,13 +15,14 @@ locale: en
 
 OneBlock:
   LootPool:
-    1:
+    0:
       - 'GRASS_BLOCK'
       - 'DIRT'
-      - 'OAK_LOG'
+      - 'COARSE_DIRT'
       - 'OAK_LEAVES'
+    1:
+      - 'OAK_LOG'
       - 'PODZOL'
-      - 'CREEPER'
     2:
       - 'BIRCH_LOG'
       - 'OAK_LOG'
@@ -30,6 +31,7 @@ OneBlock:
       - 'COW'
       - 'PIG'
       - 'CHICKEN'
+      - 'ZOMBIE'
     3:
       - 'STONE'
       - 'COBBLESTONE'
@@ -49,6 +51,7 @@ OneBlock:
       - 'COARSE_DIRT'
       - 'COPPER_ORE'
       - 'DEEPSLATE_COPPER_ORE'
+      - 'CREEPER'
     7:
       - 'MOSSY_COBBLESTONE'
       - 'WHITE_TERRACOTTA'

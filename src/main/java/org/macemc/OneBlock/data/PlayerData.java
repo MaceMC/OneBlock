@@ -14,6 +14,7 @@ import java.util.UUID;
 @Getter
 public class PlayerData extends YamlConfig
 {
+	@Getter
 	private final static ConfigItems<PlayerData> loadedData = ConfigItems.fromFolder("playerdata", PlayerData.class);
 
 	private IslandData islandData;
@@ -75,9 +76,8 @@ public class PlayerData extends YamlConfig
 		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
 	}
 
-	public static PlayerData FindOrCreateData(final OfflinePlayer op)
+	public static PlayerData FindOrCreateData(final UUID uuid)
 	{
-		UUID uuid = op.getUniqueId();
 		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
 	}
 
@@ -104,11 +104,6 @@ public class PlayerData extends YamlConfig
 	public static boolean IsDataLoaded(final String name)
 	{
 		return loadedData.isItemLoaded(name);
-	}
-
-	public static Set<String> GetLoadedDataNames()
-	{
-		return loadedData.getItemNames();
 	}
 
 	public static void loadData()

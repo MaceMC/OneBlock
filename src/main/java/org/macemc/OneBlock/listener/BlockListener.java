@@ -2,6 +2,9 @@ package org.macemc.OneBlock.listener;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import com.jeff_media.customblockdata.events.CustomBlockDataEvent;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -9,14 +12,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.data.PlayerData;
+import org.mineacademy.fo.Common;
 import org.mineacademy.fo.RandomUtil;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class BlockListener extends OneBlockListenerGroup
 {
@@ -30,26 +37,32 @@ public class BlockListener extends OneBlockListenerGroup
 		Plugin plugin = OneBlockPlugin.getInstance();
 		if (!isOneBlock(block)) return;
 
+		Player p = e.getPlayer();
 		CustomBlockData customBlockData = new CustomBlockData(block, plugin);
-		UUID uuid = UUID.fromString(Objects.requireNonNull(customBlockData.get(ownerKey, PersistentDataType.STRING)));
-		OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
-		PlayerData playerData = PlayerData.FindOrCreateData(op);
-		final Location location = block.getLocation().toCenterLocation().add(0, 1, 0);
+		OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(Objects.requireNonNull(customBlockData.get(ownerKey, PersistentDataType.STRING))));
+		PlayerData playerData = PlayerData.FindOrCreateData(op.getUniqueId());
+		Location location = block.getLocation().toCenterLocation().add(0, 1, 0);
 
 		Map.Entry<EntityType, Material> action = actionSet(playerData.getOneBlockData().getAccessible());
-
 		if (action.getKey() != null)
 		{
-			plugin.getServer().getScheduler().runTaskLater(plugin, () ->
+			Common.runLater(1,  () ->
 			{
 				block.setType(Material.GRASS_BLOCK, false);
-				block.getWorld().spawnEntity(location, action.getKey());
-			}, 1L);
+				block.getWorld().spawnEntity(location, action.getKey(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+			});
 		}
 		else
 		{
 			plugin.getServer().getScheduler().runTaskLater(plugin, () -> block.setType(action.getValue(), false), 1L);
 		}
+
+		playerData.getOneBlockData().registerBreak();
+		if (!playerData.getOneBlockData().checkNewLevel()) return;
+
+		Common.tell(p, "You leveled up the OneBlock to level: " + playerData.getOneBlockData().getLevel());
+		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+
 	}
 
 	// For OneBlock Physics keeping and other fixes
@@ -69,8 +82,6 @@ public class BlockListener extends OneBlockListenerGroup
 		Location loc = e.getBlock().getLocation().toCenterLocation().add(0, 0.5, 0);
 		e.getItems().forEach(is -> e.getPlayer().getWorld().dropItem(loc, is.getItemStack()));
 	}
-
-
 
 	@EventHandler
 	public void onCustomBlockData(CustomBlockDataEvent e)

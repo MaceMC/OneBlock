@@ -1,12 +1,12 @@
 package org.macemc.OneBlock;
 
-import com.jeff_media.customblockdata.CustomBlockData;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.listener.OneBlockListenerGroup;
+import org.macemc.OneBlock.placeholder.PlaceholderAPIHook;
 import org.macemc.OneBlock.world.VoidWorldBiome;
 import org.macemc.OneBlock.world.VoidWorldGenerator;
 import org.mineacademy.fo.plugin.SimplePlugin;
@@ -18,6 +18,9 @@ public final class OneBlockPlugin extends SimplePlugin
 	protected void onPluginStart()
 	{
 		this.registerAllEvents(OneBlockListenerGroup.class);
+
+		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null)
+			new PlaceholderAPIHook(this).register();
 	}
 
 	@Override

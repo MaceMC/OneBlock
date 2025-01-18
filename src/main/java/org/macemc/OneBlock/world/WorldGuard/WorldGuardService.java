@@ -61,15 +61,16 @@ public final class WorldGuardService
 		region.setFlag(Flags.ENDERDRAGON_BLOCK_DAMAGE, State.DENY);
 		region.setFlag(Flags.BLOCK_PLACE, State.DENY);
 		region.setFlag(Flags.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
+
 		region.getMembers().addPlayer(p.getUniqueId());
 	}
 
-	public void trustPlayer(Player owner, Player trust)
+	public void addMember(Player owner, Player target)
 	{
 		ProtectedRegion region = getProtectedRegion(owner);
 		if (region == null) return;
 
-		region.getMembers().addPlayer(trust.getUniqueId());
+		region.getMembers().addPlayer(target.getUniqueId());
 	}
 
 	public void removeMember(Player owner, UUID target)

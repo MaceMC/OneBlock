@@ -1,11 +1,16 @@
 package org.macemc.OneBlock.data.sections;
 
 import java.util.List;
+import java.util.Objects;
+
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.config.Settings;
+import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
+import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
 
 @Getter
@@ -31,7 +36,7 @@ public class OneBlockData extends Data
 		this.oneBlockLocation = oneBlockLocation;
 		this.level = level;
 		this.breaks = breaks;
-		Bukkit.getScheduler().runTaskAsynchronously(OneBlockPlugin.getInstance(), () -> this.accessible = this.getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
 	}
 
 	public SerializedMap serialize()
@@ -81,7 +86,7 @@ public class OneBlockData extends Data
 	public void setLevel(int level)
 	{
 		this.level = level;
-		Bukkit.getScheduler().runTaskAsynchronously(OneBlockPlugin.getInstance(), () -> this.accessible = this.getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
 		this.saveChanges();
 	}
 
@@ -89,5 +94,28 @@ public class OneBlockData extends Data
 	{
 		this.breaks = breaks;
 		this.saveChanges();
+	}
+
+	public void registerBreak()
+	{
+		System.out.println("Registering break");
+		this.breaks++;
+		this.saveChanges();
+	}
+
+	public boolean checkNewLevel()
+	{
+		int calculatedLevel = calculateLevelWithBreaks(this.breaks);
+		System.out.println("Calculated level: " + calculatedLevel + ", Level: " + this.level);
+		if (calculatedLevel <= this.level) return false;
+		this.level++;
+		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
+		return true;
+	}
+
+	public static int calculateLevelWithBreaks(int breaks)
+	{
+		final int a = 1, b = 6;
+		return (int) Math.floor(Math.sqrt(a * breaks) / b);
 	}
 }
