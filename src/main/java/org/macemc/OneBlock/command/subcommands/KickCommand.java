@@ -1,7 +1,5 @@
 package org.macemc.OneBlock.command.subcommands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
@@ -14,9 +12,9 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public final class KickSubCommand extends OneBlockSubCommand
+public final class KickCommand extends OneBlockSubCommand
 {
-	private KickSubCommand()
+	private KickCommand()
 	{
 		super("kick");
 		this.setMinArguments(1);

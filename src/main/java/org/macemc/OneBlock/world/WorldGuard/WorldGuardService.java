@@ -10,17 +10,16 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import java.util.Objects;
-import java.util.UUID;
-
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import org.macemc.OneBlock.config.Settings;
 import org.macemc.OneBlock.data.PlayerData;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 public final class WorldGuardService
@@ -49,11 +48,13 @@ public final class WorldGuardService
 		BlockVector3 vector3 = BukkitAdapter.asBlockVector(loc);
 		String regionName = "ob-" + p.getName().toLowerCase();
 		this.regionManager.addRegion(new ProtectedCuboidRegion(regionName, vector3, vector3));
-		PlayerData.findOrCreateData(p).getOneBlockData().setRegionID(regionName);
+		PlayerData playerData = PlayerData.findOrCreateData(p);
+		playerData.getOneBlockData().setRegionID(regionName);
 		ProtectedRegion region = this.regionManager.getRegion(regionName);
 
 		assert region != null;
 
+		region.setPriority(999);
 		region.setFlag(Flags.PASSTHROUGH, State.DENY);
 		region.setFlag(Flags.LEAF_DECAY, State.DENY);
 		region.setFlag(Flags.TNT, State.DENY);
@@ -65,11 +66,11 @@ public final class WorldGuardService
 		region.setFlag(Flags.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
 
 		region.getMembers().addPlayer(p.getUniqueId());
+		playerData.getOneBlockData().setOneBlockLocation(loc);
 	}
 
 	public void addIslandRegion(Player p, Location ob)
 	{
-		World world = ob.getWorld();
 		int size = Settings.OneBlock.size;
 
 		Location corner1 = ob.clone();
@@ -90,7 +91,14 @@ public final class WorldGuardService
 
 		assert region != null;
 
+		region.setPriority(100);
+
 		region.getMembers().addPlayer(p.getUniqueId());
+	}
+
+	public void prepareRegions(Player p, Location ob) {
+		addOBRegion(p, ob);
+		addIslandRegion(p, ob);
 	}
 
 	public void addMember(Player owner, Player target)

@@ -77,3 +77,7 @@ processResources {
         expand props
     }
 }
+
+tasks.build {
+    dependsOn tasks.shadowJar
+}

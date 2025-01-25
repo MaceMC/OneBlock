@@ -8,9 +8,9 @@ import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
 @SuppressWarnings("unused")
-public final class InviteSubCommand extends OneBlockSubCommand
+public final class InviteCommand extends OneBlockSubCommand
 {
-	private InviteSubCommand()
+	private InviteCommand()
 	{
 		super("invite");
 		this.setMinArguments(1);
@@ -44,7 +44,7 @@ public final class InviteSubCommand extends OneBlockSubCommand
 		playerData.getIslandData().invitePlayer(target);
 
 		PlayerData targetData = PlayerData.findOrCreateData(target);
-		playerData.gotInvited(owner);
+		playerData.gotInvited(target);
 
 		WorldGuardService service = WorldGuardService.getInstance();
 		service.addMember(owner, target);

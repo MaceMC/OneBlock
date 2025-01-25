@@ -10,14 +10,15 @@ import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 @Setter
 public abstract class Data implements Serializable
 {
 	protected PlayerData playerData;
 	@Getter
-	protected static ArrayList<Location> freeLocations = new ArrayList<>();
+	@Setter
+	protected static LinkedList<Location> freeLocations = new LinkedList<>();
 
 	protected void saveChanges()
 	{
@@ -30,8 +31,7 @@ public abstract class Data implements Serializable
 	{
 		Common.runAsync(() ->
 		{
-			System.out.println("Finding free locations... from " + location);
-			if (freeLocations.size() >= 20) return;
+			if (freeLocations.size() >= 8) return;
 			int size = Settings.OneBlock.size;
 			// Check +x
 			Location posX = location.clone().add(size * 2 * 16, 0, 0);
@@ -57,7 +57,12 @@ public abstract class Data implements Serializable
 	{
 		Block block = location.getBlock();
 		if (BlockListener.isOneBlock(block) || freeLocations.contains(location)) return;
-		System.out.println("Found free location: " + location);
 		freeLocations.add(location);
+	}
+
+	public static SerializedMap serializeGeneralData() {
+		SerializedMap map = new SerializedMap();
+		map.put("freeLocations", freeLocations);
+		return map;
 	}
 }

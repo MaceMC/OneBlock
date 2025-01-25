@@ -1,8 +1,6 @@
 package org.macemc.OneBlock.config;
 
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.macemc.OneBlock.OneBlockPlugin;
 import org.mineacademy.fo.settings.SimpleSettings;
 
 import java.util.HashMap;
@@ -14,9 +12,8 @@ public final class Settings extends SimpleSettings
 {
 	public static class OneBlock
 	{
-		public static int size = 20;
-		public static World world = OneBlockPlugin.getInstance().getServer().getWorld("world");
-		public static Location spawnLocation = new Location(world, 0, 64, 0);
+		public static Integer size = 20;
+		public static Location spawnLocation = new Location(null, 0, 64, 0);
 		public static Map<Integer, List<String>> map  = new HashMap<>();
 
 		private static void init()
@@ -29,7 +26,6 @@ public final class Settings extends SimpleSettings
 			if (isSetDefault("Spawn.Location"))
 			{
 				spawnLocation = Location.deserialize(getMap("Spawn.Location").asMap());
-				world = OneBlockPlugin.getInstance().getServer().getWorld(spawnLocation.getWorld().getKey());
 			}
 
 			if (isSetDefault("LootPool"))

@@ -15,11 +15,12 @@ import org.mineacademy.fo.plugin.SimplePlugin;
 
 public final class OneBlockPlugin extends SimplePlugin
 {
+	DatabaseService databaseService;
 
 	@Override
 	protected void onPluginStart()
 	{
-		DatabaseService.getInstance();
+		databaseService = DatabaseService.getInstance();
 		this.registerAllEvents(OneBlockListenerGroup.class);
 
 		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null)
@@ -27,9 +28,10 @@ public final class OneBlockPlugin extends SimplePlugin
 	}
 
 	@Override
-	protected void onPluginReload()
+	protected void onPluginStop()
 	{
 		PlayerData.saveAll();
+		databaseService.saveGeneralData();
 	}
 
 	@Override

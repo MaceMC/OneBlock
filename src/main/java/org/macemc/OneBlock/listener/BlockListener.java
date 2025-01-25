@@ -2,16 +2,14 @@ package org.macemc.OneBlock.listener;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import com.jeff_media.customblockdata.events.CustomBlockDataEvent;
-import io.papermc.paper.event.player.AsyncChatEvent;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.persistence.PersistentDataType;
@@ -22,7 +20,6 @@ import org.mineacademy.fo.Common;
 import org.mineacademy.fo.RandomUtil;
 
 import java.util.*;
-import java.util.List;
 
 public class BlockListener extends OneBlockListenerGroup
 {
@@ -78,6 +75,7 @@ public class BlockListener extends OneBlockListenerGroup
 	{
 		if (!isOneBlock(e.getBlock()))
 			return;
+		e.setCancelled(true);
 		Location loc = e.getBlock().getLocation().toCenterLocation().add(0, 0.5, 0);
 		e.getItems().forEach(is -> e.getPlayer().getWorld().dropItem(loc, is.getItemStack()));
 	}
