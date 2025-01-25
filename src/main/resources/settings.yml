@@ -14,6 +14,15 @@ Prefix: '&7&l[&x&0&0&A&B&5&2&lOn&x&0&F&C&0&6&B&leB&x&1&D&D&5&8&5&llo&x&2&C&E&A&9
 locale: en
 
 OneBlock:
+  Size: 20 # Size for the OneBlock island in Chunks (in every direction) total chunks would be Size * Size + 1
+  Spawn:
+    Location:
+      World: 'world'
+      X: 0
+      Y: 64
+      Z: 0
+      Yaw: 0
+      Pitch: 0
   LootPool:
     0:
       - 'GRASS_BLOCK'

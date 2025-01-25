@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Objects;
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.config.Settings;
-import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
+import org.macemc.OneBlock.data.Data;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
 
@@ -24,11 +21,15 @@ public class OneBlockData extends Data
 		Breaks;
 	}
 
-	private String regionID;
-	private Location oneBlockLocation;
-	private int level;
-	private int breaks;
+	private String regionID = "N/A";
+	private Location oneBlockLocation = new Location(null, 0, 64, 0);;
+	private int level = 0, breaks = 0;
 	private List<String> accessible = List.of("GRASS_BLOCK");
+
+	public OneBlockData()
+	{
+		Common.runAsync(() -> this.accessible = getAccessibleRewards());
+	}
 
 	private OneBlockData(String regionID, Location oneBlockLocation, int level, int breaks)
 	{
@@ -36,25 +37,25 @@ public class OneBlockData extends Data
 		this.oneBlockLocation = oneBlockLocation;
 		this.level = level;
 		this.breaks = breaks;
-		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = getAccessibleRewards());
 	}
 
 	public SerializedMap serialize()
 	{
 		SerializedMap map = new SerializedMap();
-		map.put(org.macemc.OneBlock.data.sections.OneBlockData.Keys.RegionID.name(), this.regionID);
-		map.put(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Location.name(), this.oneBlockLocation.serialize());
-		map.put(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Level.name(), this.level);
-		map.put(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Breaks.name(), this.breaks);
+		map.put(Keys.RegionID.name(), this.regionID);
+		map.put(Keys.Location.name(), this.oneBlockLocation.serialize());
+		map.put(Keys.Level.name(), this.level);
+		map.put(Keys.Breaks.name(), this.breaks);
 		return map;
 	}
 
 	public static OneBlockData deserialize(SerializedMap map)
 	{
-		String regionID = map.getString(org.macemc.OneBlock.data.sections.OneBlockData.Keys.RegionID.name());
-		Location oneBlockLocation = Location.deserialize(map.getMap(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Location.name()).asMap());
-		int level = map.getInteger(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Level.name());
-		int breaks = map.getInteger(org.macemc.OneBlock.data.sections.OneBlockData.Keys.Breaks.name());
+		String regionID = map.getString(Keys.RegionID.name());
+		Location oneBlockLocation = Location.deserialize(map.getMap(Keys.Location.name()).asMap());
+		int level = map.getInteger(Keys.Level.name());
+		int breaks = map.getInteger(Keys.Breaks.name());
 		return new OneBlockData(regionID, oneBlockLocation, level, breaks);
 	}
 
@@ -68,48 +69,45 @@ public class OneBlockData extends Data
 
 	public boolean hasRegion()
 	{
-		return regionID != null;
+		return !Objects.equals(regionID, "N/A");
 	}
 
 	public void setRegionID(String regionID)
 	{
 		this.regionID = regionID;
-		this.saveChanges();
+		saveChanges();
 	}
 
 	public void setOneBlockLocation(Location oneBlockLocation)
 	{
 		this.oneBlockLocation = oneBlockLocation;
-		this.saveChanges();
+		saveChanges();
 	}
 
 	public void setLevel(int level)
 	{
 		this.level = level;
 		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
-		this.saveChanges();
+		saveChanges();
 	}
 
 	public void setBreaks(int breaks)
 	{
 		this.breaks = breaks;
-		this.saveChanges();
+		saveChanges();
 	}
 
 	public void registerBreak()
 	{
-		System.out.println("Registering break");
 		this.breaks++;
-		this.saveChanges();
+		saveChanges();
 	}
 
 	public boolean checkNewLevel()
 	{
 		int calculatedLevel = calculateLevelWithBreaks(this.breaks);
-		System.out.println("Calculated level: " + calculatedLevel + ", Level: " + this.level);
 		if (calculatedLevel <= this.level) return false;
-		this.level++;
-		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
+		setLevel(calculatedLevel);
 		return true;
 	}
 

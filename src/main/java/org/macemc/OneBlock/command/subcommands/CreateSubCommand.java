@@ -32,7 +32,7 @@ public final class CreateSubCommand extends OneBlockSubCommand
 		if (!isPlayer()) tellError(SimpleLocalization.Commands.NO_CONSOLE);
 
 		Player p = getPlayer();
-		PlayerData playerData = PlayerData.FindOrCreateData(p);
+		PlayerData playerData = PlayerData.findOrCreateData(p);
 		Block block = p.getWorld().getBlockAt(new Location(p.getWorld(), 0, 64 ,0));
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		customBlockData.set(BlockListener.isOneBlockKey, PersistentDataType.BOOLEAN, true);
@@ -44,6 +44,7 @@ public final class CreateSubCommand extends OneBlockSubCommand
 		Location loc = block.getLocation();
 
 		worldGuardService.addOBRegion(p, loc);
+		worldGuardService.addIslandRegion(p, loc);
 
 		tell("Your OneBlock was created!");
 	}

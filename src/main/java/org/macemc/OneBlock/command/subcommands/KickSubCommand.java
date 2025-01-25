@@ -27,13 +27,15 @@ public final class KickSubCommand extends OneBlockSubCommand
 		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
 
 		Player p = getPlayer();
-		PlayerData playerData = PlayerData.FindOrCreateData(p);
+		PlayerData playerData = PlayerData.findOrCreateData(p);
 		if (!playerData.getOneBlockData().hasRegion()) { tell("You do not have an island! Use /ob create"); return; }
 
 		HashMap<UUID, String> invited = playerData.getIslandData().getInvitedPlayers();
-		UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
-		if (!invited.containsKey(uuid)) { tell(args[0] + " is not invited to your island!"); return; }
-		String name = invited.get(uuid);
+
+		if (!invited.containsValue(args[0])) { tell(args[0] + " is not invited to your island!"); return; }
+
+		String name = args[0];
+		UUID uuid = UUID.fromString(name);
 
 		if (p.getUniqueId().equals(uuid)) { tell("Are you trying to get you rid of your own property???"); return; }
 
@@ -48,7 +50,7 @@ public final class KickSubCommand extends OneBlockSubCommand
 		if (args.length == 1)
 		{
 			Player p = getPlayer();
-			PlayerData playerData = PlayerData.FindOrCreateData(p);
+			PlayerData playerData = PlayerData.findOrCreateData(p);
 			return playerData.getIslandData().getInvitedPlayers().values().stream().toList();
 		}
 		return list;
@@ -56,8 +58,11 @@ public final class KickSubCommand extends OneBlockSubCommand
 
 	private void kick(Player owner, UUID target)
 	{
-		PlayerData playerData = PlayerData.FindOrCreateData(owner);
+		PlayerData playerData = PlayerData.findOrCreateData(owner);
 		playerData.getIslandData().getInvitedPlayers().remove(target);
+
+		PlayerData targetData = PlayerData.findOrCreateData(target);
+		playerData.getInvitedToIsland().put(owner.getUniqueId(), owner.getName());
 
 		WorldGuardService service = WorldGuardService.getInstance();
 		service.removeMember(owner, target);

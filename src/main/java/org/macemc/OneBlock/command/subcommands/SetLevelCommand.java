@@ -20,7 +20,7 @@ public final class SetLevelCommand extends OneBlockSubCommand
 		try
 		{
 			Player p = getPlayer();
-			PlayerData playerData = PlayerData.FindOrCreateData(p);
+			PlayerData playerData = PlayerData.findOrCreateData(p);
 
 			final int level = Integer.parseInt(args[0]);
 			playerData.getOneBlockData().setLevel(level);

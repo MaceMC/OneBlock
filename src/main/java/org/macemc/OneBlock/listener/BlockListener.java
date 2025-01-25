@@ -21,7 +21,6 @@ import org.macemc.OneBlock.data.PlayerData;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.RandomUtil;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class BlockListener extends OneBlockListenerGroup
 		Player p = e.getPlayer();
 		CustomBlockData customBlockData = new CustomBlockData(block, plugin);
 		OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(Objects.requireNonNull(customBlockData.get(ownerKey, PersistentDataType.STRING))));
-		PlayerData playerData = PlayerData.FindOrCreateData(op.getUniqueId());
+		PlayerData playerData = PlayerData.findOrCreateData(op.getUniqueId());
 		Location location = block.getLocation().toCenterLocation().add(0, 1, 0);
 
 		Map.Entry<EntityType, Material> action = actionSet(playerData.getOneBlockData().getAccessible());

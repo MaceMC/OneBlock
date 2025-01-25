@@ -18,11 +18,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
-    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+    compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
 
     /* Foundation and transitive libs */
-    implementation('com.github.kangarko:Foundation:6.9.12') {
+    implementation('com.github.kangarko:Foundation:6.9.17') {
         transitive = false
     }
     implementation('org.mineacademy.plugin:WorldGuard:7.0.11')
@@ -39,6 +39,7 @@ dependencies {
 shadowJar {
     dependencies {
         include(dependency('com.jeff-media:custom-block-data:2.2.3'))
+        include(dependency('com.github.kangarko:Foundation:6.9.17'))
     }
     relocate('com.jeff_media.customblockdata', 'org.macemc.OneBlock.lib.customblockdata')
 }

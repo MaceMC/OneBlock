@@ -2,12 +2,14 @@ package org.macemc.OneBlock.data.sections;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.macemc.OneBlock.OneBlockPlugin;
+import org.macemc.OneBlock.data.Data;
 import org.macemc.OneBlock.data.PlayerData;
 import org.mineacademy.fo.collection.SerializedMap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -18,11 +20,15 @@ public class IslandData extends Data
 	public enum Keys
 	{
 		Name,
-		InvitedPlayers
+		InvitedPlayers,
 	}
 
-	private String name;
-	private HashMap<UUID, String> invitedPlayers;
+	private String name = "Island";
+	private HashMap<UUID, String> invitedPlayers = new HashMap<>();
+
+	public IslandData()
+	{
+	}
 
 	private IslandData(@NotNull String name, @NotNull HashMap<UUID, String> trustedPlayers)
 	{

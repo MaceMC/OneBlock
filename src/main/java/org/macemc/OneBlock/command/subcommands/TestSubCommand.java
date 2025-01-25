@@ -22,9 +22,7 @@ public final class TestSubCommand extends OneBlockSubCommand
 		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
 
 		Player p = getPlayer();
-		PlayerData playerData = PlayerData.getLoadedData().findItem(p.getUniqueId().toString());
 
-		boolean found = playerData != null;
-		tell("Found playerData: " + found);
+		tell("Found playerData: ");
 	}
 }

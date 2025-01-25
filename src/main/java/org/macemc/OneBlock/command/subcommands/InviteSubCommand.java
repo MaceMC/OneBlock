@@ -18,10 +18,10 @@ public final class InviteSubCommand extends OneBlockSubCommand
 
 	protected void onCommand()
 	{
-		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
+		if (!isPlayer()) { tell(SimpleLocalization.Commands.NO_CONSOLE); return; }
 
 		Player p = getPlayer();
-		PlayerData playerData = PlayerData.FindOrCreateData(p);
+		PlayerData playerData = PlayerData.findOrCreateData(p);
 		if (!playerData.getOneBlockData().hasRegion()) { tell("You do not have an island! Use /ob create"); return; }
 
 		Player target = Bukkit.getServer().getPlayer(args[0]);
@@ -29,17 +29,22 @@ public final class InviteSubCommand extends OneBlockSubCommand
 		{
 			if (p.equals(target)) { tell("You are the owner..."); return; }
 
+			if (playerData.getIslandData().getInvitedPlayers().containsKey(target.getUniqueId())) { tell("You already invited this player!"); return; }
+
 			invite(p, target);
 			tell("You invited " + target.getName() + " to your island!");
 		}
 		else
-			tellError("Player " + this.args[0] + " is not online!");
+			tell("Player " + this.args[0] + " is not online!");
 	}
 
 	private void invite(Player owner, Player target)
 	{
-		PlayerData playerData = PlayerData.FindOrCreateData(owner);
+		PlayerData playerData = PlayerData.findOrCreateData(owner);
 		playerData.getIslandData().invitePlayer(target);
+
+		PlayerData targetData = PlayerData.findOrCreateData(target);
+		playerData.gotInvited(owner);
 
 		WorldGuardService service = WorldGuardService.getInstance();
 		service.addMember(owner, target);

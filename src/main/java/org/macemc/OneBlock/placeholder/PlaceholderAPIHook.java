@@ -57,7 +57,7 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 	public @Nullable String onRequest(OfflinePlayer offlinePlayer, @NotNull String params)
 	{
 		System.out.println("onRequest: " + offlinePlayer + ", " + params);
-		PlayerData playerData = PlayerData.FindData(offlinePlayer.getUniqueId());
+		PlayerData playerData = PlayerData.findOrCreateData(offlinePlayer.getUniqueId());
 		if (playerData == null) return null;
 
 		if (params.equalsIgnoreCase("level"))

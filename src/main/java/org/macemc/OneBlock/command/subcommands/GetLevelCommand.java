@@ -2,6 +2,7 @@ package org.macemc.OneBlock.command.subcommands;
 
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
+import org.macemc.OneBlock.data.DatabaseService;
 import org.macemc.OneBlock.data.PlayerData;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
@@ -18,7 +19,7 @@ public final class GetLevelCommand extends OneBlockSubCommand
 	{
 		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
 		Player p = getPlayer();
-		PlayerData playerData = PlayerData.FindOrCreateData(p);
+		PlayerData playerData = PlayerData.findOrCreateData(p);
 		tell("Current Level is: " + playerData.getOneBlockData().getLevel());
 		tellSuccess("Command executed successfully");
 	}

@@ -1,114 +1,86 @@
 package org.macemc.OneBlock.data;
 
 import lombok.Getter;
-import org.bukkit.OfflinePlayer;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.data.sections.IslandData;
 import org.macemc.OneBlock.data.sections.OneBlockData;
-import org.mineacademy.fo.settings.ConfigItems;
-import org.mineacademy.fo.settings.YamlConfig;
+import org.mineacademy.fo.Common;
+import org.mineacademy.fo.collection.SerializedMap;
 
-import java.util.Set;
+import java.util.LinkedHashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @Getter
-public class PlayerData extends YamlConfig
+@Setter
+public class PlayerData
 {
-	@Getter
-	private final static ConfigItems<PlayerData> loadedData = ConfigItems.fromFolder("playerdata", PlayerData.class);
+	private static final ConcurrentSkipListMap<UUID, PlayerData> loadedData = new ConcurrentSkipListMap<>();
+
+	private final UUID uuid;
+	private LinkedHashMap<UUID, String> invitedToIsland = new LinkedHashMap<>();
 
 	private IslandData islandData;
 	private OneBlockData oneBlockData;
 
-	private PlayerData(final Player p)
+
+	private PlayerData(UUID uuid)
 	{
-		UUID uuid = p.getUniqueId();
-		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
+		this.uuid = uuid;
+		loadFromDatabase();
 	}
 
-	private PlayerData(final OfflinePlayer op)
+	private void loadFromDatabase()
 	{
-		UUID uuid = op.getUniqueId();
-		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
-	}
-
-	private PlayerData(final String uuid)
-	{
-		if (uuid.equals("uuid.yml")) return;
-		loadConfiguration("playerdata/uuid.yml", "playerdata/" + uuid + ".yml");
-	}
-
-	@Override
-	protected void onLoad()
-	{
-		setPathPrefix("");
-
-		/* Loading island data */
-		this.islandData = IslandData.deserialize(getMap("Island"));
+		DatabaseService.getInstance().loadPlayerData(this);
+		assert this.islandData != null && this.oneBlockData != null;
 		this.islandData.setPlayerData(this);
-
-		/* Loading OneBlock data */
-		this.oneBlockData = OneBlockData.deserialize(getMap("OneBlock"));
 		this.oneBlockData.setPlayerData(this);
 	}
 
-	@Override
-	protected void onSave()
+	public void saveToDatabase()
 	{
-		setPathPrefix("");
-
-		/* Saving island data */
-		this.set("Island", islandData.serialize());
-
-		/* Saving OneBlock data */
-		this.set("OneBlock", oneBlockData.serialize());
+		Common.runAsync(() -> DatabaseService.getInstance().savePlayerData(this));
 	}
 
-	@Override
-	protected boolean saveComments()
+	public SerializedMap serialized()
 	{
-		return false;
+		SerializedMap map = new SerializedMap();
+		map.put("invited", invitedToIsland);
+		map.put("island", islandData.serialize());
+		map.put("ob", oneBlockData.serialize());
+		return map;
 	}
 
-	public static PlayerData FindOrCreateData(final Player p)
+	public void setAttributes(SerializedMap map)
 	{
-		UUID uuid = p.getUniqueId();
-		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
+		IslandData islandData = IslandData.deserialize(map.getMap("island"));
+		OneBlockData oneBlockData = OneBlockData.deserialize(map.getMap("ob"));
+		LinkedHashMap<UUID, String> invited = map.getMap("invited", UUID.class, String.class);
+		this.islandData = islandData;
+		this.oneBlockData = oneBlockData;
+		this.invitedToIsland = invited;
 	}
 
-	public static PlayerData FindOrCreateData(final UUID uuid)
+	public void gotInvited(Player p)
 	{
-		return FindData(uuid) != null ? FindData(uuid) : CreateData(uuid);
+		invitedToIsland.put(p.getUniqueId(), p.getName());
+		saveToDatabase();
 	}
 
-	public static PlayerData CreateData(final UUID uuid)
+	public static PlayerData findOrCreateData(Player p)
 	{
-		return loadedData.loadOrCreateItem(uuid.toString(), () -> new PlayerData(uuid.toString()));
+		return findOrCreateData(p.getUniqueId());
 	}
 
-	public void removeData(final PlayerData templateFolderData)
+	public static PlayerData findOrCreateData(UUID uuid)
 	{
-		loadedData.removeItem(templateFolderData);
+		return loadedData.computeIfAbsent(uuid, PlayerData :: new);
 	}
 
-	public void removeDataByName(final String name)
+	public static void saveAll()
 	{
-		loadedData.removeItemByName(name);
+		Common.runAsync(() -> loadedData.values().forEach(PlayerData :: saveToDatabase));
 	}
-
-	public static PlayerData FindData(final UUID uuid)
-	{
-		return loadedData.findItem(uuid.toString());
-	}
-
-	public static boolean IsDataLoaded(final String name)
-	{
-		return loadedData.isItemLoaded(name);
-	}
-
-	public static void loadData()
-	{
-		loadedData.loadItems();
-	}
-
 }
