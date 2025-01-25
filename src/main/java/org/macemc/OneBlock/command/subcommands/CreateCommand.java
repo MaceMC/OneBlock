@@ -51,6 +51,6 @@ public final class CreateCommand extends OneBlockSubCommand
 		p.teleportAsync(loc.clone().add(0, 1, 0).toCenterLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
 		p.setRespawnLocation(loc.clone().add(0, 1, 0).toCenterLocation(), true);
 
-		Data.findFreeLocations(loc);
+		Data.initLocationSearch(loc);
 	}
 }

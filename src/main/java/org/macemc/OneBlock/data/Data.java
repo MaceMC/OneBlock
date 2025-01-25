@@ -13,53 +13,52 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 @Setter
-public abstract class Data implements Serializable
-{
+public abstract class Data implements Serializable {
 	protected PlayerData playerData;
 	@Getter
 	@Setter
 	protected static LinkedList<Location> freeLocations = new LinkedList<>();
 
-	protected void saveChanges()
-	{
+	protected void saveChanges() {
 		Common.runAsync(() -> playerData.saveToDatabase());
 	}
 
 	public abstract SerializedMap serialize();
 
-	public static void findFreeLocations(Location location)
-	{
-		Common.runAsync(() ->
-		{
-			if (freeLocations.size() >= 8) {
-				DatabaseService.getInstance().saveGeneralData();
-				return;
-			}
-			int size = Settings.OneBlock.size;
-			// Check +x
-			Location posX = location.clone().add(size * 2 * 16, 0, 0);
-			validLocation(posX);
-			// Check -x
-			Location negX = location.clone().add(size * 2 * -16, 0, 0);
-			validLocation(negX);
-			// Check +z
-			Location posZ = location.clone().add(0, 0, size * 2 * 16);
-			validLocation(posZ);
-			// Check -z
-			Location negZ = location.clone().add(0, 0, size * 2 * -16);
-			validLocation(negZ);
+	private static void findFreeLocations(Location location) {
+		if (freeLocations.size() >= 10) {
+			DatabaseService.getInstance().saveGeneralData();
+			return;
+		}
+		validLocation(location);
+		int size = Settings.OneBlock.size;
+		// Check +x
+		Location posX = location.clone().add(size * 2 * 16, 0, 0);
+		validLocation(posX);
+		// Check -x
+		Location negX = location.clone().add(size * 2 * -16, 0, 0);
+		validLocation(negX);
+		// Check +z
+		Location posZ = location.clone().add(0, 0, size * 2 * 16);
+		validLocation(posZ);
+		// Check -z
+		Location negZ = location.clone().add(0, 0, size * 2 * -16);
+		validLocation(negZ);
 
-			findFreeLocations(posX);
-			findFreeLocations(negX);
-			findFreeLocations(posZ);
-			findFreeLocations(negZ);
-		});
+		findFreeLocations(posX);
+		findFreeLocations(negX);
+		findFreeLocations(posZ);
+		findFreeLocations(negZ);
 	}
 
-	public static void validLocation(Location location)
-	{
+	public static void initLocationSearch(Location location) {
+		Common.runAsync(() -> findFreeLocations(location));
+	}
+
+	public static void validLocation(Location location) {
 		Block block = location.getBlock();
-		if (BlockListener.isOneBlock(block) || freeLocations.contains(location)) return;
+		if (BlockListener.isOneBlock(block) || freeLocations.contains(location) || (location.getChunk().getX() != 0 && location.getChunk().getZ() != 0))
+			return;
 		freeLocations.add(location);
 	}
 

@@ -2,6 +2,8 @@ package org.macemc.OneBlock.data.sections;
 
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.macemc.OneBlock.config.Settings;
 import org.macemc.OneBlock.data.Data;
 import org.mineacademy.fo.Common;
@@ -23,7 +25,7 @@ public class OneBlockData extends Data {
 	private List<String> accessible = List.of("GRASS_BLOCK");
 
 	public OneBlockData() {
-		Common.runAsync(() -> this.accessible = getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = getAccessibleRewards(level));
 	}
 
 	private OneBlockData(String regionID, Location oneBlockLocation, int level, int breaks) {
@@ -31,7 +33,7 @@ public class OneBlockData extends Data {
 		this.oneBlockLocation = oneBlockLocation;
 		this.level = level;
 		this.breaks = breaks;
-		Common.runAsync(() -> this.accessible = getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = getAccessibleRewards(level));
 	}
 
 	public SerializedMap serialize() {
@@ -51,7 +53,7 @@ public class OneBlockData extends Data {
 		return new OneBlockData(regionID, oneBlockLocation, level, breaks);
 	}
 
-	public List<String> getAccessibleRewards() {
+	public static List<String> getAccessibleRewards(int level) {
 		return Settings.OneBlock.map.entrySet().stream().filter(entry -> entry.getKey() <= level).flatMap(entry -> entry.getValue().stream()).toList();
 	}
 
@@ -75,16 +77,22 @@ public class OneBlockData extends Data {
 		saveChanges();
 	}
 
-	public void registerBreak() {
+	public void registerBreak(Player p) {
 		this.breaks++;
+		checkNewLevel(p);
 		saveChanges();
 	}
 
-	public boolean checkNewLevel() {
+	private void checkNewLevel(Player p) {
 		int calculatedLevel = calculateLevelWithBreaks(this.breaks);
-		if (calculatedLevel <= this.level) return false;
-		setLevel(calculatedLevel);
-		return true;
+		if (calculatedLevel <= this.level) return;
+		levelUp(p);
+	}
+
+	private void levelUp(Player p) {
+		level++;
+		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+		Common.tell(p, "You leveled up the OneBlock to level: " + level);
 	}
 
 	public static int calculateLevelWithBreaks(int breaks) {

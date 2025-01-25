@@ -16,10 +16,13 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.data.PlayerData;
+import org.macemc.OneBlock.data.sections.OneBlockData;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.RandomUtil;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class BlockListener extends OneBlockListenerGroup
 {
@@ -35,30 +38,37 @@ public class BlockListener extends OneBlockListenerGroup
 
 		Player p = e.getPlayer();
 		CustomBlockData customBlockData = new CustomBlockData(block, plugin);
-		OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(Objects.requireNonNull(customBlockData.get(ownerKey, PersistentDataType.STRING))));
+
+		String ownerString = Objects.requireNonNull(customBlockData.get(ownerKey, PersistentDataType.STRING));
+
+		if (ownerString.equalsIgnoreCase("server")) handleServerOneBlock(e);
+		else handlePlayerOneBlock(e, block, ownerString);
+	}
+
+	private void handlePlayerOneBlock(BlockBreakEvent e, Block block, String ownerString) {
+		OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(ownerString));
 		PlayerData playerData = PlayerData.findOrCreateData(op.getUniqueId());
-		Location location = block.getLocation().toCenterLocation().add(0, 1, 0);
 
-		Map.Entry<EntityType, Material> action = actionSet(playerData.getOneBlockData().getAccessible());
-		if (action.getKey() != null)
-		{
-			Common.runLater(1,  () ->
-			{
-				block.setType(Material.GRASS_BLOCK, false);
-				block.getWorld().spawnEntity(location, action.getKey(), CreatureSpawnEvent.SpawnReason.CUSTOM);
-			});
-		}
-		else
-		{
-			plugin.getServer().getScheduler().runTaskLater(plugin, () -> block.setType(action.getValue(), false), 1L);
-		}
+		String action = playerData.getOneBlockData().getAccessible().get(RandomUtil.nextBetween(0, playerData.getOneBlockData().getAccessible().size() - 1));
+		playerData.getOneBlockData().registerBreak(e.getPlayer());
+		handleAction(action, block);
+	}
 
-		playerData.getOneBlockData().registerBreak();
-		if (!playerData.getOneBlockData().checkNewLevel()) return;
+	private void handleServerOneBlock(BlockBreakEvent e) {
+		List<String> rewards = OneBlockData.getAccessibleRewards(2);
+		String action = rewards.get(RandomUtil.nextBetween(0, rewards.size() - 1));
+		handleAction(action, e.getBlock());
+	}
 
-		Common.tell(p, "You leveled up the OneBlock to level: " + playerData.getOneBlockData().getLevel());
-		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+	private void handleAction(String action, Block block) {
+		Material material = Material.getMaterial(action);
+		EntityType entity = EntityType.fromName(action);
 
+		if (material != null) Common.runLater(1, () -> block.setType(material, false));
+		if (entity != null) Common.runLater(1, () -> {
+			block.setType(Material.GRASS_BLOCK, false);
+			block.getWorld().spawnEntity(block.getLocation().add(0, 1, 0), entity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+		});
 	}
 
 	// For OneBlock Physics keeping and other fixes
@@ -91,14 +101,5 @@ public class BlockListener extends OneBlockListenerGroup
 	{
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		return customBlockData.getOrDefault(isOneBlockKey, PersistentDataType.BOOLEAN, false);
-	}
-
-	public static Map.Entry<EntityType, Material> actionSet(List<String> accessible)
-	{
-		int i = RandomUtil.nextBetween(0, accessible.size() - 1);
-		EntityType entityType = EntityType.fromName(accessible.get(i));
-		Material material = Material.getMaterial(accessible.get(i));
-
-		return new AbstractMap.SimpleEntry<>(entityType, material);
 	}
 }

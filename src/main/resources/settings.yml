@@ -15,14 +15,6 @@ locale: en
 
 OneBlock:
   Size: 20 # Size for the OneBlock island in Chunks (in every direction) total chunks would be Size * Size + 1
-  Spawn:
-    Location:
-      World: 'world'
-      X: 0
-      Y: 64
-      Z: 0
-      Yaw: 0
-      Pitch: 0
   LootPool:
     0:
       - 'GRASS_BLOCK'
