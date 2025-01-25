@@ -20,19 +20,22 @@ public class IslandData extends Data
 	public enum Keys
 	{
 		Name,
-		InvitedPlayers,
+		IslandID,
+		InvitedPlayers
 	}
 
 	private String name = "Island";
+	private String islandID = "is-";
 	private HashMap<UUID, String> invitedPlayers = new HashMap<>();
 
 	public IslandData()
 	{
 	}
 
-	private IslandData(@NotNull String name, @NotNull HashMap<UUID, String> trustedPlayers)
+	private IslandData(String name, String islandID, HashMap<UUID, String> trustedPlayers)
 	{
 		this.name = name;
+		this.islandID = islandID;
 		this.invitedPlayers = trustedPlayers;
 	}
 
@@ -41,6 +44,7 @@ public class IslandData extends Data
 	{
 		SerializedMap map = new SerializedMap();
 		map.put(Keys.Name.name(), name);
+		map.put(Keys.IslandID.name(), islandID);
 		map.put(Keys.InvitedPlayers.name(), invitedPlayers);
 		return map;
 	}
@@ -48,8 +52,9 @@ public class IslandData extends Data
 	public static IslandData deserialize(SerializedMap map)
 	{
 		String name = map.getString(Keys.Name.name());
+		String islandID = map.getString(Keys.IslandID.name());
 		HashMap<UUID, String> invited = map.getMap(Keys.InvitedPlayers.name(), UUID.class, String.class);
-		return new IslandData(name, invited);
+		return new IslandData(name, islandID, invited);
 	}
 
 	public void setName(String name)

@@ -31,9 +31,9 @@ dependencies {
 
     implementation('com.jeff-media:custom-block-data:2.2.3')
 
-    compileOnly 'org.projectlombok:lombok:1.18.36'
+    compileOnly('org.projectlombok:lombok:1.18.34')
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor('org.projectlombok:lombok:1.18.34')
 }
 
 shadowJar {
