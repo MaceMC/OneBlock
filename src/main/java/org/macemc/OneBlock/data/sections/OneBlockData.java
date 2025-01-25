@@ -73,7 +73,7 @@ public class OneBlockData extends Data {
 
 	public void setLevel(int level) {
 		this.level = level;
-		Common.runAsync(() -> this.accessible = this.getAccessibleRewards());
+		Common.runAsync(() -> this.accessible = getAccessibleRewards(level));
 		saveChanges();
 	}
 
