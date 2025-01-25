@@ -22,34 +22,36 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Getter
-public final class WorldGuardService
-{
+public final class WorldGuardService {
 	@Getter
 	private static final WorldGuardService Instance = new WorldGuardService();
 	private final WorldGuard worldGuard;
 	private final RegionContainer regionContainer;
 	private final RegionManager regionManager;
 
-	private WorldGuardService()
-	{
-		if (Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") == null)
-		{
+	private WorldGuardService() {
+		if (Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") == null) {
 			throw new RuntimeException("WorldGuard plugin not found!");
-		} else
-		{
+		} else {
 			this.worldGuard = WorldGuard.getInstance();
 			this.regionContainer = this.worldGuard.getPlatform().getRegionContainer();
 			this.regionManager = this.regionContainer.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getServer().getWorld("world"))));
 		}
 	}
 
-	public void addOBRegion(Player p, Location loc)
-	{
-		BlockVector3 vector3 = BukkitAdapter.asBlockVector(loc);
-		String regionName = "ob-" + p.getName().toLowerCase();
-		this.regionManager.addRegion(new ProtectedCuboidRegion(regionName, vector3, vector3));
+	public void addOBRegion(Player p, Location ob) {
+		ProtectedRegion region = addOBRegion("ob-" + p.getName().toLowerCase(), ob);
 		PlayerData playerData = PlayerData.findOrCreateData(p);
-		ProtectedRegion region = this.regionManager.getRegion(regionName);
+
+		region.getMembers().addPlayer(p.getUniqueId());
+		playerData.getOneBlockData().setRegionID(region.getId());
+		playerData.getOneBlockData().setOneBlockLocation(ob);
+	}
+
+	public ProtectedRegion addOBRegion(String regionID, Location ob) {
+		BlockVector3 vector3 = BukkitAdapter.asBlockVector(ob);
+		this.regionManager.addRegion(new ProtectedCuboidRegion(regionID, vector3, vector3));
+		ProtectedRegion region = this.regionManager.getRegion(regionID);
 
 		assert region != null;
 
@@ -64,13 +66,18 @@ public final class WorldGuardService
 		region.setFlag(Flags.BLOCK_PLACE, State.DENY);
 		region.setFlag(Flags.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
 
-		region.getMembers().addPlayer(p.getUniqueId());
-		playerData.getOneBlockData().setRegionID(regionName);
-		playerData.getOneBlockData().setOneBlockLocation(loc);
+		return region;
 	}
 
-	public void addIslandRegion(Player p, Location ob)
-	{
+	public void addIslandRegion(Player p, Location ob) {
+		ProtectedRegion region = addIslandRegion("is-" + p.getName().toLowerCase(), ob);
+
+		PlayerData playerData = PlayerData.findOrCreateData(p);
+		region.getMembers().addPlayer(p.getUniqueId());
+		playerData.getIslandData().setIslandID(region.getId());
+	}
+
+	public ProtectedRegion addIslandRegion(String islandID, Location ob) {
 		int size = Settings.OneBlock.size;
 
 		Location corner1 = ob.clone();
@@ -84,17 +91,12 @@ public final class WorldGuardService
 		BlockVector3 loc1 = BukkitAdapter.asBlockVector(corner1);
 		BlockVector3 loc2 = BukkitAdapter.asBlockVector(corner2);
 
-		String islandID = "is-" + p.getName().toLowerCase();
 		this.regionManager.addRegion(new ProtectedCuboidRegion(islandID, loc1, loc2));
-		PlayerData playerData = PlayerData.findOrCreateData(p);
 		ProtectedRegion region = this.regionManager.getRegion(islandID);
-
 		assert region != null;
 
 		region.setPriority(50);
-
-		region.getMembers().addPlayer(p.getUniqueId());
-		playerData.getIslandData().setIslandID(islandID);
+		return region;
 	}
 
 	public void prepareRegions(Player p, Location ob) {
@@ -102,8 +104,7 @@ public final class WorldGuardService
 		addIslandRegion(p, ob);
 	}
 
-	public void addMember(Player owner, Player target)
-	{
+	public void addMember(Player owner, Player target) {
 		ProtectedRegion obRegion = getObRegion(owner);
 		ProtectedRegion isRegion = getIsRegion(owner);
 
@@ -114,8 +115,7 @@ public final class WorldGuardService
 		isRegion.getMembers().addPlayer(target.getUniqueId());
 	}
 
-	public void removeMember(Player owner, UUID target)
-	{
+	public void removeMember(Player owner, UUID target) {
 		ProtectedRegion obRegion = getObRegion(owner);
 		ProtectedRegion isRegion = getIsRegion(owner);
 		if (obRegion == null || isRegion == null) return;
@@ -124,15 +124,13 @@ public final class WorldGuardService
 		isRegion.getMembers().removePlayer(target);
 	}
 
-	private @Nullable ProtectedRegion getObRegion(Player owner)
-	{
+	private @Nullable ProtectedRegion getObRegion(Player owner) {
 		PlayerData playerData = PlayerData.findOrCreateData(owner);
 		String regionID = playerData.getOneBlockData().getRegionID();
 		return regionManager.getRegion(regionID);
 	}
 
-	private @Nullable ProtectedRegion getIsRegion(Player owner)
-	{
+	private @Nullable ProtectedRegion getIsRegion(Player owner) {
 		PlayerData playerData = PlayerData.findOrCreateData(owner);
 		String islandID = playerData.getIslandData().getIslandID();
 		return regionManager.getRegion(islandID);

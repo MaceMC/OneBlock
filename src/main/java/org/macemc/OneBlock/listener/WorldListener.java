@@ -9,6 +9,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.data.Data;
+import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
 
 public class WorldListener extends OneBlockListenerGroup {
 
@@ -22,6 +23,7 @@ public class WorldListener extends OneBlockListenerGroup {
 	}
 
 	public static void initSpawn(World world, Location location) {
+		if (BlockListener.isOneBlock(world.getBlockAt(location))) return;
 		world.setSpawnLocation(0, 65, 0);
 
 		Block block = world.getBlockAt(location);
@@ -29,5 +31,9 @@ public class WorldListener extends OneBlockListenerGroup {
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		customBlockData.set(BlockListener.isOneBlockKey, PersistentDataType.BOOLEAN, true);
 		customBlockData.set(BlockListener.ownerKey, PersistentDataType.STRING, "server");
+
+		WorldGuardService worldGuardService = WorldGuardService.getInstance();
+		worldGuardService.addOBRegion("server", location);
+		worldGuardService.addIslandRegion("server", location);
 	}
 }

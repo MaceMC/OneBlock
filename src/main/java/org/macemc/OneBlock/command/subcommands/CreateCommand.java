@@ -15,12 +15,17 @@ import org.macemc.OneBlock.listener.BlockListener;
 import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
+import java.util.concurrent.TimeUnit;
+
 @SuppressWarnings("unused")
 public final class CreateCommand extends OneBlockSubCommand
 {
 	private CreateCommand()
 	{
 		super("create");
+		setCooldown(1, TimeUnit.MINUTES);
+		setCooldownMessage("You need to wait before creating a new OneBlock!");
+		setCooldownBypassPermission("ob.command.create.bypass");
 	}
 
 	@Override

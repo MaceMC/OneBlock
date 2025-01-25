@@ -26,7 +26,7 @@ public abstract class Data implements Serializable {
 	public abstract SerializedMap serialize();
 
 	private static void findFreeLocations(Location location) {
-		if (freeLocations.size() >= 10) {
+		if (freeLocations.size() >= 15) {
 			DatabaseService.getInstance().saveGeneralData();
 			return;
 		}
@@ -52,7 +52,10 @@ public abstract class Data implements Serializable {
 	}
 
 	public static void initLocationSearch(Location location) {
-		Common.runAsync(() -> findFreeLocations(location));
+		Common.runAsync(() -> {
+			if (freeLocations.size() >= 5) return;
+			findFreeLocations(location);
+		});
 	}
 
 	public static void validLocation(Location location) {

@@ -12,11 +12,15 @@ import org.mineacademy.fo.settings.SimpleLocalization;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public final class TPCommand extends OneBlockSubCommand {
 	private TPCommand() {
 		super("tp");
+		setCooldown(5, TimeUnit.SECONDS);
+		setCooldownMessage("You are teleporting too fast!");
+		setCooldownBypassPermission("ob.command.tp.bypass");
 	}
 
 	@Override
