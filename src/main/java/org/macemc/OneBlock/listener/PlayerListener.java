@@ -13,6 +13,6 @@ public class PlayerListener extends OneBlockListenerGroup {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
-
+		PlayerData.removeLoadedData(e.getPlayer().getUniqueId());
 	}
 }

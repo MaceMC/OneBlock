@@ -1,15 +1,10 @@
 package org.macemc.OneBlock.placeholder;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.macemc.OneBlock.OneBlockPlugin;
-import org.macemc.OneBlock.config.Settings;
 import org.macemc.OneBlock.data.PlayerData;
 
 public final class PlaceholderAPIHook extends PlaceholderExpansion
@@ -43,14 +38,6 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 	public boolean persist()
 	{
 		return true;
-	}
-
-	@Override
-	public @Nullable String onPlaceholderRequest(Player player, @NotNull String params)
-	{
-		System.out.println("onPlaceholderRequest: " + player + ", " + params);
-
-		return null;
 	}
 
 	@Override

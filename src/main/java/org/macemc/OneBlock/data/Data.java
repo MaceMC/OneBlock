@@ -31,7 +31,10 @@ public abstract class Data implements Serializable
 	{
 		Common.runAsync(() ->
 		{
-			if (freeLocations.size() >= 8) return;
+			if (freeLocations.size() >= 8) {
+				DatabaseService.getInstance().saveGeneralData();
+				return;
+			}
 			int size = Settings.OneBlock.size;
 			// Check +x
 			Location posX = location.clone().add(size * 2 * 16, 0, 0);

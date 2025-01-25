@@ -79,6 +79,10 @@ public class PlayerData
 		return loadedData.computeIfAbsent(uuid, PlayerData :: new);
 	}
 
+	public static void removeLoadedData(UUID uuid) {
+		loadedData.remove(uuid);
+	}
+
 	public static void saveAll()
 	{
 		Common.runAsync(() -> loadedData.values().forEach(PlayerData :: saveToDatabase));

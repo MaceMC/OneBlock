@@ -60,7 +60,7 @@ public final class KickCommand extends OneBlockSubCommand
 		playerData.getIslandData().getInvitedPlayers().remove(target);
 
 		PlayerData targetData = PlayerData.findOrCreateData(target);
-		playerData.getInvitedToIsland().put(owner.getUniqueId(), owner.getName());
+		playerData.getInvitedToIsland().remove(owner.getUniqueId(), owner.getName());
 
 		WorldGuardService service = WorldGuardService.getInstance();
 		service.removeMember(owner, target);

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.lang.Localization;
@@ -47,7 +48,7 @@ public final class TPCommand extends OneBlockSubCommand {
 			location = targetData.getOneBlockData().getOneBlockLocation();
 		}
 
-		p.teleportAsync(location.toCenterLocation().add(0, 1, 0));
+		p.teleportAsync(location.toCenterLocation().add(0, 1, 0), PlayerTeleportEvent.TeleportCause.COMMAND);
 	}
 
 	@Override

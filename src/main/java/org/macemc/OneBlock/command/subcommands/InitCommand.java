@@ -10,7 +10,6 @@ import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
 import org.macemc.OneBlock.data.Data;
 import org.macemc.OneBlock.listener.BlockListener;
-import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
 import org.mineacademy.fo.settings.SimpleLocalization;
 
 @SuppressWarnings("unused")
@@ -32,14 +31,14 @@ public final class InitCommand extends OneBlockSubCommand {
 
 		block.setType(Material.GRASS_BLOCK);
 
-		// WorldGuard Region
-		WorldGuardService worldGuardService = WorldGuardService.getInstance();
+		//		// WorldGuard Region
+		//		WorldGuardService worldGuardService = WorldGuardService.getInstance();
 		Location loc = block.getLocation();
-
-		worldGuardService.prepareRegions(p, loc);
+		//
+		//		worldGuardService.prepareRegions(p, loc);
 
 		tell("OneBlock was initialized!");
 
-		Data.findFreeLocations(loc);
+		Data.initLocationSearch(loc);
 	}
 }

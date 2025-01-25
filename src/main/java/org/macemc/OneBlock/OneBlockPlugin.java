@@ -13,36 +13,30 @@ import org.macemc.OneBlock.world.VoidWorldGenerator;
 import org.mineacademy.fo.plugin.SimplePlugin;
 
 
-public final class OneBlockPlugin extends SimplePlugin
-{
-	DatabaseService databaseService;
+public final class OneBlockPlugin extends SimplePlugin {
+	private DatabaseService databaseService;
 
 	@Override
-	protected void onPluginStart()
-	{
+	protected void onPluginStart() {
 		databaseService = DatabaseService.getInstance();
 		this.registerAllEvents(OneBlockListenerGroup.class);
 
-		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null)
-			new PlaceholderAPIHook(this).register();
+		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) new PlaceholderAPIHook(this).register();
 	}
 
 	@Override
-	protected void onPluginStop()
-	{
+	protected void onPluginStop() {
 		PlayerData.saveAll();
 		databaseService.saveGeneralData();
 	}
 
 	@Override
-	public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id)
-	{
+	public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
 		return new VoidWorldGenerator();
 	}
 
 	@Override
-	public BiomeProvider getDefaultBiomeProvider(@NotNull String worldName, @Nullable String id)
-	{
+	public BiomeProvider getDefaultBiomeProvider(@NotNull String worldName, @Nullable String id) {
 		return new VoidWorldBiome();
 	}
 }

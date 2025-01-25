@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
@@ -47,8 +48,8 @@ public final class CreateCommand extends OneBlockSubCommand
 		worldGuardService.prepareRegions(p, loc);
 
 		tell("Your OneBlock was created!");
-		p.teleportAsync(loc.clone().add(0, 1, 0));
-		p.setRespawnLocation(loc.clone().add(0, 1, 0));
+		p.teleportAsync(loc.clone().add(0, 1, 0).toCenterLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
+		p.setRespawnLocation(loc.clone().add(0, 1, 0).toCenterLocation(), true);
 
 		Data.findFreeLocations(loc);
 	}

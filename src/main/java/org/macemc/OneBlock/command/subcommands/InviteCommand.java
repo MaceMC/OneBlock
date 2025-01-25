@@ -44,7 +44,7 @@ public final class InviteCommand extends OneBlockSubCommand
 		playerData.getIslandData().invitePlayer(target);
 
 		PlayerData targetData = PlayerData.findOrCreateData(target);
-		playerData.gotInvited(target);
+		targetData.gotInvited(owner);
 
 		WorldGuardService service = WorldGuardService.getInstance();
 		service.addMember(owner, target);

@@ -49,12 +49,11 @@ public final class WorldGuardService
 		String regionName = "ob-" + p.getName().toLowerCase();
 		this.regionManager.addRegion(new ProtectedCuboidRegion(regionName, vector3, vector3));
 		PlayerData playerData = PlayerData.findOrCreateData(p);
-		playerData.getOneBlockData().setRegionID(regionName);
 		ProtectedRegion region = this.regionManager.getRegion(regionName);
 
 		assert region != null;
 
-		region.setPriority(999);
+		region.setPriority(100);
 		region.setFlag(Flags.PASSTHROUGH, State.DENY);
 		region.setFlag(Flags.LEAF_DECAY, State.DENY);
 		region.setFlag(Flags.TNT, State.DENY);
@@ -66,6 +65,7 @@ public final class WorldGuardService
 		region.setFlag(Flags.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
 
 		region.getMembers().addPlayer(p.getUniqueId());
+		playerData.getOneBlockData().setRegionID(regionName);
 		playerData.getOneBlockData().setOneBlockLocation(loc);
 	}
 
@@ -84,16 +84,17 @@ public final class WorldGuardService
 		BlockVector3 loc1 = BukkitAdapter.asBlockVector(corner1);
 		BlockVector3 loc2 = BukkitAdapter.asBlockVector(corner2);
 
-		String regionName = "is-" + p.getName().toLowerCase();
-		this.regionManager.addRegion(new ProtectedCuboidRegion(regionName, loc1, loc2));
-		PlayerData.findOrCreateData(p).getOneBlockData().setRegionID(regionName);
-		ProtectedRegion region = this.regionManager.getRegion(regionName);
+		String islandID = "is-" + p.getName().toLowerCase();
+		this.regionManager.addRegion(new ProtectedCuboidRegion(islandID, loc1, loc2));
+		PlayerData playerData = PlayerData.findOrCreateData(p);
+		ProtectedRegion region = this.regionManager.getRegion(islandID);
 
 		assert region != null;
 
-		region.setPriority(100);
+		region.setPriority(50);
 
 		region.getMembers().addPlayer(p.getUniqueId());
+		playerData.getIslandData().setIslandID(islandID);
 	}
 
 	public void prepareRegions(Player p, Location ob) {
@@ -105,7 +106,9 @@ public final class WorldGuardService
 	{
 		ProtectedRegion obRegion = getObRegion(owner);
 		ProtectedRegion isRegion = getIsRegion(owner);
-		if (obRegion == null || isRegion == null) return;
+
+		assert isRegion != null;
+		assert obRegion != null;
 
 		obRegion.getMembers().addPlayer(target.getUniqueId());
 		isRegion.getMembers().addPlayer(target.getUniqueId());
