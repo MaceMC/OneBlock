@@ -11,18 +11,18 @@ import java.util.UUID;
 @Getter
 public class IslandData extends Data {
 	public enum Keys {
-		Name, IslandID, InvitedPlayers
+		IslandName, IslandID, InvitedPlayers
 	}
 
-	private String name = "Island";
+	private String islandName = "Island";
 	private String islandID = "N/A";
 	private HashMap<UUID, String> invitedPlayers = new HashMap<>();
 
 	public IslandData() {
 	}
 
-	private IslandData(String name, String islandID, HashMap<UUID, String> invitedPlayers) {
-		this.name = name;
+	private IslandData(String islandName, String islandID, HashMap<UUID, String> invitedPlayers) {
+		this.islandName = islandName;
 		this.islandID = islandID;
 		this.invitedPlayers = invitedPlayers;
 	}
@@ -30,26 +30,21 @@ public class IslandData extends Data {
 	@Override
 	public SerializedMap serialize() {
 		SerializedMap map = new SerializedMap();
-		map.put(Keys.Name.name(), name);
+		map.put(Keys.IslandName.name(), islandName);
 		map.put(Keys.IslandID.name(), islandID);
 		map.put(Keys.InvitedPlayers.name(), invitedPlayers);
 		return map;
 	}
 
 	public static IslandData deserialize(SerializedMap map) {
-		String name = map.getString(Keys.Name.name());
+		String name = map.getString(Keys.IslandName.name());
 		String islandID = map.getString(Keys.IslandID.name());
 		HashMap<UUID, String> invited = map.getMap(Keys.InvitedPlayers.name(), UUID.class, String.class);
 		return new IslandData(name, islandID, invited);
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		saveChanges();
-	}
-
-	public void setInvitedPlayers(HashMap<UUID, String> invitedPlayers) {
-		this.invitedPlayers = invitedPlayers;
+	public void setIslandName(String islandName) {
+		this.islandName = islandName;
 		saveChanges();
 	}
 

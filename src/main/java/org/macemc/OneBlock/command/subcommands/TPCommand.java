@@ -52,7 +52,7 @@ public final class TPCommand extends OneBlockSubCommand {
 			location = targetData.getOneBlockData().getOneBlockLocation();
 		}
 
-		p.teleportAsync(location.toCenterLocation().add(0, 1, 0), PlayerTeleportEvent.TeleportCause.COMMAND);
+		p.teleportAsync(location.toCenterLocation().toHighestLocation().add(0, 1, 0), PlayerTeleportEvent.TeleportCause.COMMAND);
 	}
 
 	@Override

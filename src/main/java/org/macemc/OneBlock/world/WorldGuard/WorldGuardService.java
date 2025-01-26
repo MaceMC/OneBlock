@@ -75,6 +75,7 @@ public final class WorldGuardService {
 		PlayerData playerData = PlayerData.findOrCreateData(p);
 		region.getMembers().addPlayer(p.getUniqueId());
 		playerData.getIslandData().setIslandID(region.getId());
+		playerData.getIslandData().setIslandName(p.getName() + "'s Island");
 	}
 
 	public ProtectedRegion addIslandRegion(String islandID, Location ob) {

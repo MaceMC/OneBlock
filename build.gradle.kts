@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.macemc"
-version = "0.0.1"
+version = "0.1.0"
 val author = "tooobiiii"
 val targetJavaVersion = 21
 
@@ -25,7 +25,7 @@ dependencies {
     }
     implementation("org.mineacademy.plugin:WorldGuard:7.0.11")
     implementation("org.mineacademy.plugin:WorldEdit:7.3.6")
-    implementation("org.mineacademy.plugin:PlaceholderAPI:2.11.6")
+    compileOnly("org.mineacademy.plugin:PlaceholderAPI:2.11.6")
 
     implementation("com.jeff-media:custom-block-data:2.2.3")
 

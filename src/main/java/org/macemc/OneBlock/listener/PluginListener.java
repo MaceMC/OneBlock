@@ -2,6 +2,7 @@ package org.macemc.OneBlock.listener;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -29,6 +30,7 @@ public class PluginListener extends OneBlockListenerGroup {
 		Block block = world.getBlockAt(location);
 		if (BlockListener.isOneBlock(block)) return;
 		world.setSpawnLocation(0, 65, 0);
+		world.setDifficulty(Difficulty.NORMAL);
 
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		customBlockData.set(BlockListener.isOneBlockKey, PersistentDataType.BOOLEAN, true);

@@ -1,19 +1,19 @@
-package org.macemc.OneBlock.placeholder;
+package org.macemc.OneBlock.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.data.PlayerData;
 
 public final class PlaceholderAPIHook extends PlaceholderExpansion
 {
-	private final Plugin plugin;
 
-	public PlaceholderAPIHook(Plugin plugin)
+	@Override
+	public @NotNull String getAuthor()
 	{
-		this.plugin = plugin;
+		return "tooobiiii";
 	}
 
 	@Override
@@ -23,15 +23,9 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 	}
 
 	@Override
-	public @NotNull String getAuthor()
-	{
-		return "toobiii";
-	}
-
-	@Override
 	public @NotNull String getVersion()
 	{
-		return "0.0.1";
+		return OneBlockPlugin.getVersion();
 	}
 
 	@Override
@@ -43,7 +37,6 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 	@Override
 	public @Nullable String onRequest(OfflinePlayer offlinePlayer, @NotNull String params)
 	{
-		System.out.println("onRequest: " + offlinePlayer + ", " + params);
 		PlayerData playerData = PlayerData.findOrCreateData(offlinePlayer.getUniqueId());
 		if (playerData == null) return null;
 
@@ -52,6 +45,8 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 
 		if (params.equalsIgnoreCase("breaks"))
 			return String.valueOf(playerData.getOneBlockData().getBreaks());
+
+		if (params.equalsIgnoreCase("islandName")) return playerData.getIslandData().getIslandName();
 
 		return null;
 	}

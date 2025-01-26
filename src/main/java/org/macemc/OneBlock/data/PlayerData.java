@@ -85,6 +85,9 @@ public class PlayerData
 
 	public static void saveAll()
 	{
-		Common.runAsync(() -> loadedData.values().forEach(PlayerData :: saveToDatabase));
+		Common.runAsync(() -> {
+			loadedData.values().forEach(PlayerData :: saveToDatabase);
+			loadedData.clear();
+		});
 	}
 }

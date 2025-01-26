@@ -91,6 +91,7 @@ public class OneBlockData extends Data {
 
 	private void levelUp(Player p) {
 		level++;
+		Common.runAsync(() -> this.accessible = getAccessibleRewards(level));
 		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 		Common.tell(p, "You leveled up the OneBlock to level: " + level);
 	}

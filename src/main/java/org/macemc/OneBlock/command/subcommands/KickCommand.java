@@ -1,5 +1,6 @@
 package org.macemc.OneBlock.command.subcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.command.OneBlockSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
@@ -33,7 +34,7 @@ public final class KickCommand extends OneBlockSubCommand
 		if (!invited.containsValue(args[0])) { tell(args[0] + " is not invited to your island!"); return; }
 
 		String name = args[0];
-		UUID uuid = UUID.fromString(name);
+		UUID uuid = Bukkit.getOfflinePlayer(name).getUniqueId();
 
 		if (p.getUniqueId().equals(uuid)) { tell("Are you trying to get you rid of your own property???"); return; }
 
