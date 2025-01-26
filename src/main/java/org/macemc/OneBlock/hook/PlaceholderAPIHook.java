@@ -1,11 +1,13 @@
 package org.macemc.OneBlock.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.macemc.OneBlock.OneBlockPlugin;
 import org.macemc.OneBlock.data.PlayerData;
+
+import static org.macemc.OneBlock.utility.OneBlockUtil.getSwitchedPlayerData;
 
 public final class PlaceholderAPIHook extends PlaceholderExpansion
 {
@@ -35,9 +37,9 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion
 	}
 
 	@Override
-	public @Nullable String onRequest(OfflinePlayer offlinePlayer, @NotNull String params)
+	public @Nullable String onPlaceholderRequest(Player p, @NotNull String params)
 	{
-		PlayerData playerData = PlayerData.findOrCreateData(offlinePlayer.getUniqueId());
+		PlayerData playerData = getSwitchedPlayerData(p);
 		if (playerData == null) return null;
 
 		if (params.equalsIgnoreCase("level"))

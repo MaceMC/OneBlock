@@ -5,41 +5,34 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.macemc.OneBlock.OneBlockPlugin;
-import org.macemc.OneBlock.command.OneBlockSubCommand;
+import org.macemc.OneBlock.command.PlayerSubCommand;
 import org.macemc.OneBlock.data.Data;
 import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.listener.BlockListener;
 import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
-import org.mineacademy.fo.settings.SimpleLocalization;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.macemc.OneBlock.utility.OneBlockUtil.teleportOneBlock;
+
 @SuppressWarnings("unused")
-public final class CreateCommand extends OneBlockSubCommand
+public final class CreateCommand extends PlayerSubCommand
 {
 	private CreateCommand()
 	{
 		super("create");
+		this.oneBlockState = OneBlockState.NO_ONEBLOCK_ONLY;
+		setDescription("Create your OneBlock");
 		setCooldown(1, TimeUnit.MINUTES);
 		setCooldownMessage("You need to wait before creating a new OneBlock!");
 		setCooldownBypassPermission("ob.command.create.bypass");
 	}
 
 	@Override
-	protected void onCommand()
+	protected void execute(Player p, PlayerData playerData)
 	{
-		if (!isPlayer()) tellError(SimpleLocalization.Commands.NO_CONSOLE);
-
-		Player p = getPlayer();
-		PlayerData playerData = PlayerData.findOrCreateData(p);
-		if (playerData.getOneBlockData().hasRegion()) {
-			tell("You already have a OneBlock!");
-			return;
-		}
-
 		Block block = p.getWorld().getBlockAt(Data.getFreeLocations().remove());
 		CustomBlockData customBlockData = new CustomBlockData(block, OneBlockPlugin.getInstance());
 		customBlockData.set(BlockListener.isOneBlockKey, PersistentDataType.BOOLEAN, true);
@@ -53,8 +46,7 @@ public final class CreateCommand extends OneBlockSubCommand
 		worldGuardService.prepareRegions(p, loc);
 
 		tell("Your OneBlock was created!");
-		p.teleportAsync(loc.clone().add(0, 1, 0).toCenterLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
-		p.setRespawnLocation(loc.clone().add(0, 1, 0).toCenterLocation(), true);
+		teleportOneBlock(p, loc);
 
 		Data.initLocationSearch(loc);
 	}

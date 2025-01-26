@@ -2,28 +2,25 @@ package org.macemc.OneBlock.command.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.macemc.OneBlock.command.OneBlockSubCommand;
+import org.macemc.OneBlock.command.PlayerSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
-import org.mineacademy.fo.settings.SimpleLocalization;
 
 @SuppressWarnings("unused")
-public final class InviteCommand extends OneBlockSubCommand
+public final class InviteCommand extends PlayerSubCommand
 {
 	private InviteCommand()
 	{
 		super("invite");
-		this.setMinArguments(1);
+		setMinArguments(1);
+		setDescription("Invite a player to your island");
+		setUsage("<player>");
+		this.oneBlockState = OneBlockState.ONEBLOCK_ONLY;
 	}
 
-	protected void onCommand()
+	@Override
+	protected void execute(Player p, PlayerData playerData)
 	{
-		if (!isPlayer()) { tell(SimpleLocalization.Commands.NO_CONSOLE); return; }
-
-		Player p = getPlayer();
-		PlayerData playerData = PlayerData.findOrCreateData(p);
-		if (!playerData.getOneBlockData().hasRegion()) { tell("You do not have an island! Use /ob create"); return; }
-
 		Player target = Bukkit.getServer().getPlayer(args[0]);
 		if (target != null)
 		{

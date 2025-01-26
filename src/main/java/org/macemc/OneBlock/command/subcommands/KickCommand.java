@@ -2,10 +2,9 @@ package org.macemc.OneBlock.command.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.macemc.OneBlock.command.OneBlockSubCommand;
+import org.macemc.OneBlock.command.PlayerSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
 import org.macemc.OneBlock.world.WorldGuard.WorldGuardService;
-import org.mineacademy.fo.settings.SimpleLocalization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,22 +12,19 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public final class KickCommand extends OneBlockSubCommand
+public final class KickCommand extends PlayerSubCommand
 {
 	private KickCommand()
 	{
 		super("kick");
-		this.setMinArguments(1);
+		setMinArguments(1);
+		setDescription("Kick a player from your island");
+		setUsage("<player>");
+		oneBlockState = OneBlockState.ONEBLOCK_ONLY;
 	}
 
-	protected void onCommand()
+	protected void execute(Player p, PlayerData playerData)
 	{
-		if (!isPlayer()) { tellError(SimpleLocalization.Commands.NO_CONSOLE); return; }
-
-		Player p = getPlayer();
-		PlayerData playerData = PlayerData.findOrCreateData(p);
-		if (!playerData.getOneBlockData().hasRegion()) { tell("You do not have an island! Use /ob create"); return; }
-
 		HashMap<UUID, String> invited = playerData.getIslandData().getInvitedPlayers();
 
 		if (!invited.containsValue(args[0])) { tell(args[0] + " is not invited to your island!"); return; }
