@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.macemc.OneBlock.config.Settings;
 import org.macemc.OneBlock.data.Data;
+import org.macemc.OneBlock.utility.OneBlockBossBar;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
 
@@ -92,6 +93,7 @@ public class OneBlockData extends Data {
 	private void levelUp(Player p) {
 		level++;
 		Common.runAsync(() -> this.accessible = getAccessibleRewards(level));
+		OneBlockBossBar.findOrCreateBossBar(playerData.getUuid()).levelUp();
 		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 		Common.tell(p, "You leveled up the OneBlock to level: " + level);
 	}

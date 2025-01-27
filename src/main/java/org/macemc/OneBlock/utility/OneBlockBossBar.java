@@ -6,41 +6,56 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.macemc.OneBlock.config.Settings;
 import org.macemc.OneBlock.data.PlayerData;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OneBlockBossBar {
 
-	private static ConcurrentHashMap<UUID, OneBlockBossBar> bossBars = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<UUID, OneBlockBossBar> loadedBossBars = new ConcurrentHashMap<>();
 	private static final BarColor color = BarColor.GREEN;
 	private static final BarStyle style = BarStyle.SOLID;
+	private static final Map<Integer, String> levelNames = Settings.OneBlock.levelNames;
 
 	@Getter
 	private final BossBar bossBar;
 
 	private final PlayerData playerData;
+	private int nextLevel;
+	private int nextLevelBreaks;
 
 	public OneBlockBossBar(UUID uuid) {
-		bossBar = Bukkit.createBossBar("Level %ob_level%: Level Name", color, style);
 		playerData = PlayerData.findOrCreateData(uuid);
+		nextLevel = playerData.getOneBlockData().getLevel() + 1;
+		nextLevelBreaks = calculateBreaksForLevel(nextLevel) - calculateBreaksForLevel(nextLevel - 1);
+		bossBar = Bukkit.createBossBar(levelNames.get(nextLevel - 1), color, style);
+		bossBar.setProgress(0);
 	}
 
 	public void addViewer(Player p) {
-		bossBar.addPlayer(p);
+		if (!bossBar.getPlayers().contains(p))
+			bossBar.addPlayer(p);
 	}
 
 	public void removeViewer(Player p) {
-		bossBar.removePlayer(p);
+		if (bossBar.getPlayers().contains(p))
+			bossBar.removePlayer(p);
+		loadedBossBars.entrySet().removeIf(entry -> entry.getValue().equals(this));
 	}
 
 	public void registerBreak() {
-		bossBar.setProgress(calculateProgress(playerData.getOneBlockData().getBreaks(), playerData.getOneBlockData().getLevel() + 1));
+		int currentBreaks = playerData.getOneBlockData().getBreaks();
+		int breaksForCurrentLevel = currentBreaks - calculateBreaksForLevel(nextLevel - 1);
+		bossBar.setProgress((double) breaksForCurrentLevel / nextLevelBreaks);
 	}
 
 	public void levelUp() {
-		bossBar.setTitle("Level %ob_level%: " + "Level Name");
+		bossBar.setTitle("Level " + nextLevel + ": Level Name");
+		nextLevel++;
+		nextLevelBreaks = calculateBreaksForLevel(nextLevel) - calculateBreaksForLevel(nextLevel - 1);
 		bossBar.setProgress(0);
 	}
 
@@ -49,11 +64,7 @@ public class OneBlockBossBar {
 		return (int) Math.ceil(Math.pow(level * b, 2) / a);
 	}
 
-	public static double calculateProgress(int breaks, int level) {
-		return (double) breaks / calculateBreaksForLevel(level);
-	}
-
 	public static OneBlockBossBar findOrCreateBossBar(UUID uuid) {
-		return bossBars.computeIfAbsent(uuid, OneBlockBossBar :: new);
+		return loadedBossBars.computeIfAbsent(uuid, OneBlockBossBar :: new);
 	}
 }

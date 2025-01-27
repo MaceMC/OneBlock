@@ -53,6 +53,9 @@ public class BlockListener extends OneBlockListenerGroup {
 		playerData.getOneBlockData().registerBreak(e.getPlayer());
 
 		OneBlockBossBar bossBar = OneBlockBossBar.findOrCreateBossBar(op.getUniqueId());
+		bossBar.addViewer(e.getPlayer());
+
+		bossBar.registerBreak();
 
 		handleAction(action, block);
 	}

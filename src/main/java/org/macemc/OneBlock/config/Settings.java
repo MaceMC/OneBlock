@@ -13,6 +13,7 @@ public final class Settings extends SimpleSettings
 	{
 		public static Integer size = 20;
 		public static Map<Integer, List<String>> map  = new HashMap<>();
+		public static Map<Integer, String> levelNames = new HashMap<>();
 
 		private static void init()
 		{
@@ -23,6 +24,17 @@ public final class Settings extends SimpleSettings
 
 			if (isSetDefault("LootPool"))
 				map = getMapList("LootPool", Integer.class, String.class, null);
+
+			extractLevelNames(map);
+		}
+
+		private static void extractLevelNames(Map<Integer, List<String>> map) {
+			for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+				List<String> list = entry.getValue();
+				if (!list.isEmpty()) {
+					levelNames.put(entry.getKey(), list.removeFirst());
+				}
+			}
 		}
 	}
 }

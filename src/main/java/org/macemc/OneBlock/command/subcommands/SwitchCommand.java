@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.macemc.OneBlock.command.PlayerSubCommand;
 import org.macemc.OneBlock.data.PlayerData;
+import org.macemc.OneBlock.utility.OneBlockBossBar;
 import org.macemc.OneBlock.utility.OneBlockUtil;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public final class SwitchCommand extends PlayerSubCommand {
 
 	private void switchIsland(Player p, PlayerData targetData) {
 		PersistentDataContainer container = p.getPersistentDataContainer();
+		OneBlockBossBar.findOrCreateBossBar(targetData.getUuid()).removeViewer(p);
 		OneBlockUtil.setSwitchPersistentData(p, targetData);
 		Location location = targetData.getOneBlockData().getOneBlockLocation();
 		teleportOneBlock(p, location);
